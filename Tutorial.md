@@ -71,6 +71,7 @@ for c in status_response:
 ###Obtenemos las transacciones
 ```python
 transactions_response= pb.transactions(token=token, id_account=None)
+print transactions_response
 for tr in transactions_response:
-print tr
+    print tr
 ```
