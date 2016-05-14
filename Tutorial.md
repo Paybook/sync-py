@@ -63,7 +63,7 @@ print status_response
 ```
 
 ```python
-for c in status_response:
+for c in r:
     if c['code'] == 202 or c['code'] == 200:
         print 'True'
 ```
