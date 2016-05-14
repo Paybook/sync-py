@@ -54,7 +54,7 @@ r = pb.status(token=token, id_site=id_site, url_status=credentials_response['sta
 
 ###Obtenemos las transacciones
 ```python
-for c in status_response:
+for c in r:
     if c['code'] == 202 or c['code'] == 200:
         transactions_response= pb.transactions(token=token, id_account=None)
         for tr in transactions_response:
