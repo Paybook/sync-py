@@ -120,7 +120,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				catalogs = self._catalogues(token)
 			else:
 				raise Error('Invalid token',400)
@@ -143,7 +143,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('Valid token ... ')
 				id_user = user.get_id_user()
 				db_credentials = _DB.Credentials(id_user,id_site)
@@ -190,7 +190,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('Valid token ... ')
 				id_user = user.get_id_user()
 				db_credentials = _DB.Credentials.get(id_user)
@@ -233,7 +233,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('Valid token ... ')
 				id_user = user.get_id_user()
 				self._delete_credentials(token,id_credential,id_user)
@@ -261,7 +261,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
@@ -287,7 +287,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
@@ -322,7 +322,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
@@ -352,7 +352,7 @@ class Paybook():
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
-			if user.am_i_logged_in():
+			if self.validate_session(token) and user.am_i_logged_in():
 				#self.logger.debug('Getting transactions ... ')
 				account_transactions = self._transactions(token,id_account)
 			else:
@@ -364,7 +364,8 @@ class Paybook():
 		return account_transactions
 
 	def validate_session(self,token):
-		is_valid = self.call(endpoint='session/' + token + '/verify',method='get')
+		self.call(endpoint='sessions/' + token + '/verify',method='get')
+		return True
 
 class Error(Exception):
 
