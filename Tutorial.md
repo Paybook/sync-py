@@ -21,13 +21,13 @@ pb = Paybook(api_key,db_environment=True,logger=None)
 
 ###Creamos un usuario
 ```python
-r = pb.signup("sdk_test", "sdk_test")  
+r = pb.signup("sdk_test")
 print r  
 ```
 
 ###Hacemos login
 ```python
-r = pb.login("sdk_test", "sdk_test")  
+r = pb.login("sdk_test")
 print r  
 ```
 

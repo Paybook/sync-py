@@ -14,9 +14,9 @@ Constructor
 Sessions
 ----------
 
-**paybook.signup**(username,password)
+**paybook.signup**(username)
 
-**paybook.login**(username,password)
+**paybook.login**(username)
 
 **paybook.validate_session**(token)
 
