@@ -45,10 +45,13 @@ for site in r:
         id_site = site['id_site']
         print id_site
 ```
+###Configuramos nuestras credenciales del SAT
+```python
+credentials = {'rfc':'YOUR_RFC', 'password':'YOUR_CIEC'}
+```
 
 ###Cargamos las credenciales del SAT
 ```python
-credentials = {'rfc':'YOUR_RFC', 'password':'YOUR_CIEC'}
 credentials_response = pb.credentials(token=token, id_site=id_site, credentials=credentials)
 print credentials_response
 ```
@@ -59,11 +62,15 @@ status_response = pb.status(token=token, id_site=id_site, url_status=credentials
 print status_response 
 ```
 
-###Obtenemos las transacciones
 ```python
 for c in status_response:
     if c['code'] == 202 or c['code'] == 200:
-        transactions_response= pb.transactions(token=token, id_account=None)
-        for tr in transactions_response:
-            print tr
+        print 'True'
+```
+
+###Obtenemos las transacciones
+```python
+transactions_response= pb.transactions(token=token, id_account=None)
+for tr in transactions_response:
+print tr
 ```
