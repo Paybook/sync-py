@@ -50,13 +50,13 @@ class Paybook():
 		}#End of data
 		return self.call(endpoint='users',method='post',data=data)
 
-	def signup(self,username,password):
+	def signup(self,username):
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
 			signup_response = {
 				'sdk_message' : 'User already exists'
 			}#End of signup_response
-			user = _DB.User(username,password)
+			user = _DB.User(username=username, token=None)
 			user_exist = user.do_i_exist()
 			#self.logger.debug('User exist: ' + str(user_exist))
 			if not user_exist:
@@ -79,13 +79,14 @@ class Paybook():
 		login_response = self.call(endpoint='sessions',method='post',data=data)
 		return login_response
 
-	def login(self,username,password):
+	def login(self,username):
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
-			user = _DB.User(username,password)
+			user = _DB.User(username=username, token=None)
 			if user.login():
 				#self.logger.debug('User logged in at db ... ')
 				id_user = user.get_id_user()
+				print id_user
 				#self.logger.debug('Login to paybook ... ')
 				login_response = self._login(id_user)
 				#self.logger.debug('Updating token in db ... ')
@@ -94,7 +95,7 @@ class Paybook():
 				#self.logger.debug('User was not logged in ... ')
 				raise Error('Invalid username or password',400)
 		else:
-			login_response = paybook._login(id_user)
+			login_response = self._login(username)
 		return login_response
 
 	def _catalogues(self,token):
@@ -119,7 +120,7 @@ class Paybook():
 	def catalogues(self,token):
 		if self.db_environment:
 			#self.logger.debug('DB environment available')
-			user = _DB.User(token)
+			user = _DB.User(token=token, username=None)
 			if self.validate_session(token) and user.am_i_logged_in():
 				catalogs = self._catalogues(token)
 			else:
