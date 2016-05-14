@@ -1,0 +1,3 @@
+Flask == 0.10.1
+requests == 2.5.1
+setuptools == 18.3.2
