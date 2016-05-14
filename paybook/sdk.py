@@ -4,7 +4,7 @@ import requests
 from json import dumps
 from flask import json
 from flask import make_response
-from paybook1 import db as _DB
+from paybook import db as _DB
 import logging
 
 PAYBOOK_URL = 'https://sync.paybook.com/v1/'
@@ -31,9 +31,9 @@ class Paybook():
 
 	def get_api_error(self,conn):
 		try:
-			self.logger.debug('Paybook API error catched')
+			#self.logger.debug('Paybook API error catched')
 			error_response = conn.json()# Execution problem happens when there is a connection error
-			self.logger.debug(error_response)
+			#self.logger.debug(error_response)
 			message = error_response['message']
 			code = error_response['code']
 			api_error = Error(message,code)
@@ -50,18 +50,18 @@ class Paybook():
 
 	def signup(self,username,password):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			signup_response = {
 				'sdk_message' : 'User already exists'
 			}#End of signup_response
 			user = _DB.User(username,password)
 			user_exist = user.do_i_exist()
-			self.logger.debug('User exist: ' + str(user_exist))
+			#self.logger.debug('User exist: ' + str(user_exist))
 			if not user_exist:
-				self.logger.debug('Singning up user ... ')
+				#self.logger.debug('Singning up user ... ')
 				signup_response = self._signup(username)
-				self.logger.debug(signup_response)
-				self.logger.debug('Updating id_user in db ... ')
+				#self.logger.debug(signup_response)
+				#self.logger.debug('Updating id_user in db ... ')
 				user.set_id_user(signup_response['id_user'])
 				user.save()
 				signup_response['sdk_message'] = 'User signed up'
@@ -79,17 +79,17 @@ class Paybook():
 
 	def login(self,username,password):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(username,password)
 			if user.login():
-				self.logger.debug('User logged in at db ... ')
+				#self.logger.debug('User logged in at db ... ')
 				id_user = user.get_id_user()
-				self.logger.debug('Login to paybook ... ')
+				#self.logger.debug('Login to paybook ... ')
 				login_response = self._login(id_user)
-				self.logger.debug('Updating token in db ... ')
+				#self.logger.debug('Updating token in db ... ')
 				user.set_token(login_response['token'])
 			else:
-				self.logger.debug('User was not logged in ... ')
+				#self.logger.debug('User was not logged in ... ')
 				raise Error('Invalid username or password',400)
 		else:
 			login_response = paybook._login(id_user)
@@ -99,13 +99,24 @@ class Paybook():
 		params = {
 			"token":token
 		}#End of params
-		self.logger.info('Getting catalogues ... ')
+		#self.logger.info('Getting catalogues ... ')
 		catalogs = self.call(endpoint='catalogues/sites',method='get',params=params)
+		organizations = self.call(endpoint='catalogues/site_organizations',method='get',params=params)
+		avatars_by_id_site_organization = {}
+		for organization in organizations:
+			id_site_organization = organization['id_site_organization']
+			avatar = organization['avatar']
+			avatars_by_id_site_organization[id_site_organization] = avatar
+		for site in catalogs:
+			id_site_organization = site['id_site_organization']
+			if id_site_organization in avatars_by_id_site_organization:
+				avatar = avatars_by_id_site_organization[id_site_organization]
+				site['avatar'] = avatar
 		return catalogs
 
 	def catalogues(self,token):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
 				catalogs = self._catalogues(token)
@@ -128,25 +139,25 @@ class Paybook():
 
 	def credentials(self,token,id_site,credentials):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
-				self.logger.debug('Valid token ... ')
+				#self.logger.debug('Valid token ... ')
 				id_user = user.get_id_user()
 				db_credentials = _DB.Credentials(id_user,id_site)
 				if not db_credentials.do_i_exist():
-					self.logger.debug('Creating credentials ... ')
+					#self.logger.debug('Creating credentials ... ')
 					credentials_response = self._credentials(token,id_site,id_user,credentials)
 					ws = credentials_response['ws']
 					status = credentials_response['status']
 					twofa = credentials_response['twofa']
 					id_credential = credentials_response['id_credential']
-					self.logger.debug('Updating credentials in db ... ')
+					#self.logger.debug('Updating credentials in db ... ')
 					db_credentials = _DB.Credentials(id_user,id_site,ws,status,twofa,id_credential)
 					db_credentials.save()
 					credentials_response['sdk_message'] = 'Credentials created'
 				else:
-					self.logger.debug('Credentials already exist ... ')
+					#self.logger.debug('Credentials already exist ... ')
 					status = db_credentials.get_status()
 					twofa = db_credentials.get_twofa()
 					ws = db_credentials.get_ws()
@@ -158,7 +169,7 @@ class Paybook():
 					}#End of credentials_response
 					return credentials_response
 			else:
-				self.logger.debug('Invalid token ... ')
+				#self.logger.debug('Invalid token ... ')
 				raise Error('Invalid token',400)
 		else:
 			credentials_response = self._credentials(token,id_site,id_user,credentials_user,credentials_password)
@@ -175,54 +186,54 @@ class Paybook():
 
 	def status(self,token,id_site,url_status=None):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
-				self.logger.debug('User logged in ... ')
+				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
 				if credentials.do_i_exist():
 					url_status = credentials.get_status()
-					self.logger.debug('Getting status ... ')
+					#self.logger.debug('Getting status ... ')
 					site_status = self._status(token,id_site,url_status)
 				else:
-					self.logger.debug('Credential does not exist')
+					#self.logger.debug('Credential does not exist')
 					raise Error('Credential does not exist',400)
 			else:
-				self.logger.debug('Invalid token ... ')
+				#self.logger.debug('Invalid token ... ')
 				raise Error('Invalid token',400)
 		elif url_status is not None:
-			self.logger.debug('Getting status ... ')
+			#self.logger.debug('Getting status ... ')
 			site_status = self._status(token,id_site,url_status)
 		else:
-			self.logger.debug('url_status is required in non-db_environment mode')
+			#self.logger.debug('url_status is required in non-db_environment mode')
 			raise Error('url_status is required in non-db_environment mode',400)
 		return site_status
 
 	def twofa(self,token,id_site,twofa,url_twofa=None):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
-				self.logger.debug('User logged in ... ')
+				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
 				if credentials.do_i_exist():
 					url_twofa = credentials.get_twofa()
-					self.logger.debug('Posting twofa ... ')
-					self.logger.debug(url_twofa)
+					#self.logger.debug('Posting twofa ... ')
+					#self.logger.debug(url_twofa)
 					twofa_response = self._status(token,id_site,url_twofa)
 				else:
-					self.logger.debug('Credential does not exist')
+					#self.logger.debug('Credential does not exist')
 					raise Error('Credential does not exist',400)
 			else:
-				self.logger.debug('Invalid token ... ')
+				#self.logger.debug('Invalid token ... ')
 				raise Error('Invalid token',400)
 		elif url_twofa is not None:
-			self.logger.debug('Posting twofa ... ')
+			#self.logger.debug('Posting twofa ... ')
 			twofa_response = self._status(token,id_site,url_twofa)
 		else:
-			self.logger.debug('url_status is required in non-db_environment mode')
+			#self.logger.debug('url_status is required in non-db_environment mode')
 			raise Error('url_status is required in non-db_environment mode',400)
 		return twofa_response
 
@@ -236,23 +247,23 @@ class Paybook():
 
 	def accounts(self,token,id_site):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
-				self.logger.debug('User logged in ... ')
+				#self.logger.debug('User logged in ... ')
 				id_user = user.get_id_user()
 				credentials = _DB.Credentials(id_user,id_site)
 				if credentials.do_i_exist():
-					self.logger.debug('Getting accounts ... ')
+					#self.logger.debug('Getting accounts ... ')
 					site_accounts = self._accounts(token,id_site)
 				else:
-					self.logger.debug('Credential does not exist')
+					#self.logger.debug('Credential does not exist')
 					raise Error('Credential does not exist',400)
 			else:
-				self.logger.debug('Invalid token ... ')
+				#self.logger.debug('Invalid token ... ')
 				raise Error('Invalid token',400)
 		else:
-			self.logger.debug('Getting accounts ... ')
+			#self.logger.debug('Getting accounts ... ')
 			site_accounts = self._accounts(token,id_site)
 		return site_accounts	
 
@@ -266,16 +277,16 @@ class Paybook():
 
 	def transactions(self,token,id_account):
 		if self.db_environment:
-			self.logger.debug('DB environment available')
+			#self.logger.debug('DB environment available')
 			user = _DB.User(token)
 			if user.am_i_logged_in():
-				self.logger.debug('Getting transactions ... ')
+				#self.logger.debug('Getting transactions ... ')
 				account_transactions = self._transactions(token,id_account)
 			else:
-				self.logger.debug('Invalid token ... ')
+				#self.logger.debug('Invalid token ... ')
 				raise Error('Invalid token',400)
 		else:
-			self.logger.debug('Getting transactions ... ')
+			#self.logger.debug('Getting transactions ... ')
 			account_transactions = self._transactions(token,id_account)
 		return account_transactions
 
