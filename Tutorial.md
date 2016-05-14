@@ -1,10 +1,16 @@
-###Instalamos el sdk de Paybook
+###En la consola:
+####Instalamos el sdk de Paybook
+```
 pip install paybook  
 o  
-sudo pip install paybook  
+sudo pip install paybook
+```
 
 ###En la consola de Python
+```
 python
+>>>
+```
 
 ###Configuramos las llaves e instanciamos el sdk
 ```python
@@ -28,6 +34,7 @@ print r
 ###Guardamos el token para las solicitudes posteriores
 ```python
 token = r['token']
+print token
 ```
 
 ###Buscamos el id del SAT
@@ -49,7 +56,8 @@ print credentials_response
 
 ###Revisamos el status del agregador
 ```python  
-r = pb.status(token=token, id_site=id_site, url_status=credentials_response['status'])  
+status_response = pb.status(token=token, id_site=id_site, url_status=credentials_response['status']) 
+print status_response 
 ```
 
 ###Obtenemos las transacciones
