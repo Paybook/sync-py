@@ -24,6 +24,8 @@ class Paybook():
 			conn = requests.post(url,data=data,params=params,headers=headers)
 		elif method == 'get':
 			conn = requests.get(url,data=data,params=params,headers=headers)
+		elif method == 'delete':
+			conn = requests.delete(url,data=data,params=params,headers=headers)
 		if conn.status_code == 200:
 			return conn.json()['response']
 		else:
@@ -174,6 +176,77 @@ class Paybook():
 		else:
 			credentials_response = self._credentials(token,id_site,id_user,credentials_user,credentials_password)
 		return credentials_response
+
+	def _get_credentials(self,token,id_user):
+		params = {
+			'token' : token,
+			'id_user' : id_user
+		}#End of params
+		#self.logger.info('Getting credentials ... ')
+		credentials_response = self.call(endpoint='credentials',method='get',params=params)
+		return credentials_response
+
+	def get_credentials(self,token,id_user=None):
+		if self.db_environment:
+			#self.logger.debug('DB environment available')
+			user = _DB.User(token)
+			if user.am_i_logged_in():
+				#self.logger.debug('Valid token ... ')
+				id_user = user.get_id_user()
+				db_credentials = _DB.Credentials.get(id_user)
+				paybook_credentials = self._get_credentials(token,id_user)
+				catalogues = self.catalogues(token)
+				data_by_id_site = {}
+				for catalogue in catalogues:
+					id_site = catalogue['id_site']
+					avatar = catalogue['avatar']
+					name = catalogue['name']
+					data_by_id_site[id_site] = {
+						'avatar' : avatar,
+						'name' : name
+					}#End of data_by_id_site
+				credentials_response = []
+				for db_credential in db_credentials:
+					for paybook_credential in paybook_credentials:
+						if db_credential['id_credential'] == paybook_credential['id_credential']:
+							id_site = paybook_credential['id_site']
+							paybook_credential['avatar'] = data_by_id_site[id_site]['avatar']
+							paybook_credential['name'] = data_by_id_site[id_site]['name']
+							credentials_response.append(paybook_credential)
+			else:
+				#self.logger.debug('Invalid token ... ')
+				raise Error('Invalid token',400)
+		else:
+			credentials_response = self._get_credentials(token,id_site,id_user)
+		return credentials_response
+
+	def _delete_credentials(self,token,id_credential,id_user):
+		params = {
+			'token' : token,
+			'id_user' : id_user
+		}#End of params
+		delete_response = self.call(endpoint='credentials/'+id_credential,method='delete',params=params)
+		return delete_response
+
+	def delete_credentials(self,token,id_credential,id_user=None):
+		delete_response = False
+		if self.db_environment:
+			#self.logger.debug('DB environment available')
+			user = _DB.User(token)
+			if user.am_i_logged_in():
+				#self.logger.debug('Valid token ... ')
+				id_user = user.get_id_user()
+				self._delete_credentials(token,id_credential,id_user)
+				db_credentials = _DB.Credentials(id_user,id_credential=id_credential)
+				if db_credentials.do_i_exist():
+					db_credentials.delete()
+				delete_response = True
+			else:	
+				#self.logger.debug('Invalid token ... ')
+				raise Error('Invalid token',400)
+		else:
+			delete_response = self._get_credentials(token,id_site,id_user)
+		return delete_response
 
 	def _status(self,token,id_site,status):
 		headers = {'Content-type' : 'application/json'}		

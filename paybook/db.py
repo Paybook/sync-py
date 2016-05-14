@@ -86,7 +86,6 @@ class User():
 class Credentials():	
 
 	def __init__(self,*args,**kwargs):
-
 		if len(args) == 6:
 			self.id_user = args[0]
 			self.id_site = args[1]
@@ -101,6 +100,10 @@ class Credentials():
 			self.status = None
 			self.twofa = None
 			self.id_credential = None
+		if 'id_credential' in kwargs:
+			self.id_user = args[0]
+			self.id_credential = kwargs['id_credential']
+			self.id_site = None
 
 	def save(self):
 		date = datetime.datetime.utcnow()
@@ -108,10 +111,23 @@ class Credentials():
 		cur.executemany('INSERT INTO credentials VALUES (?,?,?,?,?,?)', credentials)
 		connection.commit()	
 
-	def do_i_exist(self):
-		id_site = self.id_site
+	def delete(self):
 		id_user = self.id_user
-		cur.execute('SELECT * FROM credentials WHERE id_user=? AND id_site=?',(id_user,id_site))
+		if self.id_credential:	
+			id_credential = self.id_credential
+			cur.execute('DELETE FROM credentials WHERE id_user=? AND id_credential=?',(id_user,id_credential))
+		else:
+			id_site = self.id_site
+			cur.execute('DELETE FROM credentials WHERE id_user=? AND id_site=?',(id_user,id_site))
+
+	def do_i_exist(self):
+		id_user = self.id_user
+		if self.id_credential:	
+			id_credential = self.id_credential
+			cur.execute('SELECT * FROM credentials WHERE id_user=? AND id_credential=?',(id_user,id_credential))
+		else:
+			id_site = self.id_site
+			cur.execute('SELECT * FROM credentials WHERE id_user=? AND id_site=?',(id_user,id_site))
 		credentials = cur.fetchone()	
 		if credentials is not None:
 			return True
@@ -142,8 +158,20 @@ class Credentials():
 		ws = credentials[2]
 		return ws
 
-
-
+	@staticmethod
+	def get(id_user):
+		credentials_list = []
+		cur.execute('SELECT * FROM credentials WHERE id_user=?',(id_user,))
+		fetched_credentials = cur.fetchall()
+		for fetched_credential in fetched_credentials:
+			credential = {
+				'id_credential' : fetched_credential[5],
+				'ws' : fetched_credential[2],
+				'status' : fetched_credential[3],
+				'twofa' : fetched_credential[4]
+			}#End of credential
+			credentials_list.append(credential)
+		return credentials_list
 
 
 
