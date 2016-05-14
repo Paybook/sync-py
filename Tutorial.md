@@ -40,7 +40,6 @@ print token
 ###Buscamos el id del SAT
 ```python
 r = pb.catalogues(token=token)  
-print r  
 for site in r:  
     if site['name'] == 'SAT':  
         id_site = site['id_site']
