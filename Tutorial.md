@@ -5,6 +5,7 @@ sudo pip install paybook
 sudo pip install flask
 sudo pip install logging
 sudo pip install flask-cors
+sudo pip install requests
 ```
 
 ###En la consola de Python
