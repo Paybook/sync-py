@@ -1,9 +1,10 @@
 ###En la consola:
-####Instalamos el sdk de Paybook
+####Instalamos el sdk de Paybook y dependencias
 ```
-pip install paybook  
-o  
 sudo pip install paybook
+sudo pip install flask
+sudo pip install logging
+sudo pip install flask-cors
 ```
 
 ###En la consola de Python
@@ -21,13 +22,13 @@ pb = Paybook(api_key,db_environment=True,logger=None)
 
 ###Creamos un usuario
 ```python
-r = pb.signup("sdk_test")
+r = pb.signup("sdk_test","pass")
 print r  
 ```
 
 ###Hacemos login
 ```python
-r = pb.login("sdk_test")
+r = pb.login("sdk_test","pass")
 print r  
 ```
 
@@ -63,7 +64,7 @@ print status_response
 ```
 
 ```python
-for c in r:
+for c in status_response:
     if c['code'] == 202 or c['code'] == 200:
         print 'True'
 ```
