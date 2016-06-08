@@ -1,8 +1,10 @@
-# SDK - REST API mapping
+# SDK_UML - REST_API mapping
 
-Here is the underlying mapping between Paybook SDK projects i.e. sync projects, and [Paybook Sync Rest API](https://www.paybook.com/sync/docs){:target="_blank"}. In the next tables there are examples of how an endpoint must be requested from an SDK and which is the REST API endpoint that is called when this happens.
+Here is the underlying mapping between Paybook SDK projects i.e. sync projects, and [Paybook Sync Rest API](https://www.paybook.com/sync/docs). In the next tables there are examples of how an endpoint must be requested from an SDK and which is the REST API endpoint that is called when this happens.
 
-Important: the SDK sample code is python-based but the execution's essence must be the same independent of the platform. 
+You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j-5EqmWDF3bDV0Um9oT2c/view?usp=sharing).
+
+**Important:** the SDK sample code is python-based but the execution's essence must be the same independent of the platform. 
 
 # Users
 
