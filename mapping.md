@@ -22,6 +22,12 @@ Creates a new session (login):
 | Deletes a session | DELETE https://sync.paybook.com/v1/sessions/:token | ```users = session.delete()```|
 
 
+# Catalogues
+
+Request account types:
+
+
+
 
 
 
