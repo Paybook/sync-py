@@ -22,12 +22,11 @@ Creates a new user:
 
 Creates a new session (login):
 
-| Action | REST API | SDK |
-| -- | -- | -- |
-| Creates a session | POST https://sync.paybook.com/v1/sessions | ```session = Session(user)``` |
-| Verify a session | GET https://sync.paybook.com/v1/sessions/:token/verify | ```session.verify()```|
-| Deletes a session | DELETE https://sync.paybook.com/v1/sessions/:token | ```users = session.delete()```|
-
+| Action         | REST API                                 | SDK                                  |
+| -------------- | ---------------------------------------- | ------------------------------------ |
+| Creates a session | POST https://sync.paybook.com/v1/sessions   | ```session = Session(user)```          |
+| Verify a session | GET https://sync.paybook.com/v1/sessions/:token/verify | ```session.verify()```                  |
+| Deletes a session     | DELETE https://sync.paybook.com/v1/sessions/:token    | ```users = session.delete()```|
 
 # Catalogues
 
