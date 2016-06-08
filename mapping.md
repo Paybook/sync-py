@@ -8,7 +8,7 @@ You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j
 
 # Users
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                 |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates a user | POST https://sync.paybook.com/v1/users   | ```user = User(username)```          |
 | Deletes a user | DELETE https://sync.paybook.com/v1/users | ```User.delete(id_user)```                  |
@@ -17,7 +17,7 @@ You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j
 
 # Sessions
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates a session | POST https://sync.paybook.com/v1/sessions   | ```session = Session(user)```          |
 | Verify a session | GET https://sync.paybook.com/v1/sessions/:token/verify | ```session.verify()```                  |
@@ -25,7 +25,7 @@ You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j
 
 # Catalogues
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Request account types | GET https://sync.paybook.com/v1/catalogues/account_types   | ```account_types = Catalogues.get_account_types(session,options)```          |
 | Request attachment types | GET https://sync.paybook.com/v1/catalogues/attachment_types   | ```attachment_types = Catalogues.get_attachment_types(session,options)```          |
@@ -35,7 +35,7 @@ You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j
 
 # Credentials
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates or updates credentials | POST https://sync.paybook.com/v1/credentials | ```credentials = Credential(session,id_site,credentials_data)```          |
 | Deletes credentials | DELETE https://sync.paybook.com/v1/credentials/:id_credential | ```Credentials.delete(session,id_credential)```          |
@@ -44,20 +44,20 @@ You can view or download SDK UML [here](https://drive.google.com/file/d/0ByfSP0j
 
 # Accounts
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests accounts of a user | GET https://sync.paybook.com/v1/accounts | ```accounts = Account.get(session,options)```          |
 
 # Transactions
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests number of transactions | GET https://sync.paybook.com/v1/transactions/count | ```transactions_count = Transaction.get_count(session,options)```          |
 | Requests transactions | GET https://sync.paybook.com/v1/transactions | ```transactions = Transaction.get(session,options)```          |
 
 # Attachments
 
-| Action         | REST API                                 | SDK                                  |
+| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests attachments | GET https://sync.paybook.com/v1/attachments | ```attachments = Attachment.get(session,options)```          |
 | Request an attachments | GET https://sync.paybook.com/v1/attachments/:id_attachment | ```attachment = Attachment.get(session,id_attachment)```          |
