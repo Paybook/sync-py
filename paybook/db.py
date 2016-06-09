@@ -9,28 +9,25 @@ cur = connection.cursor()
 users_table_cmd = "SELECT name FROM sqlite_master WHERE type='table' AND name='users'"
 users_table_exist = cur.execute(users_table_cmd).fetchone()
 if not users_table_exist:
-	cur.execute('''CREATE TABLE users (username text, password text, id_user text, date text, token text)''')
+	cur.execute('''CREATE TABLE users (username text, id_user text, date text, token text)''')
 credentials_table_cmd = "SELECT name FROM sqlite_master WHERE type='table' AND name='credentials'"
 credentials_table_exist = cur.execute(credentials_table_cmd).fetchone()
 if not credentials_table_exist:
 	cur.execute(''' CREATE TABLE credentials (id_user text, id_site text, ws text, status text, twofa text, id_credential text)''')
 
-class User():	
-
-	def __init__(self,*args,**kwargs):
-		if len(args) == 2:
-			self.username = args[0]
-			self.password = args[1]
+class User():
+	def __init__(self, token, username=None, *args,**kwargs):
+		if username:
+			self.username = username
 			self.token = None
-		if len(args) == 1:
-			self.token = args[0]
+		elif token:
+			self.token = token
 			self.username = None
-			self.password = None
 
 	def save(self):
 		date = datetime.datetime.utcnow()
-		insert_user = [(self.username,self.password ,self.id_user,date,''),]
-		cur.executemany('INSERT INTO users VALUES (?,?,?,?,?)', insert_user)
+		insert_user = [(self.username,self.id_user,date,''),]
+		cur.executemany('INSERT INTO users VALUES (?,?,?,?)', insert_user)
 		connection.commit()	
 	
 	def set_token(self,token):
@@ -58,7 +55,7 @@ class User():
 			username = self.username
 			cur.execute('SELECT * FROM users WHERE username=?',(username,))
 		user = cur.fetchone()
-		return user[2]
+		return user[1]
 
 	def do_i_exist(self):
 		username = self.username
@@ -71,16 +68,14 @@ class User():
 
 	def login(self):
 		username = self.username
-		cur.execute('SELECT username, password FROM users WHERE username=?',(username,))
-		user_and_psw = cur.fetchone()
+		cur.execute('SELECT username FROM users WHERE username=?',(username,))
+		user = cur.fetchone()
 		username = None
-		password = None
-		if user_and_psw is not None:
-			username = user_and_psw[0]
-			password = user_and_psw[1]		
-		if username == self.username and password == self.password:	
+		if user is not None:
+			username = user[0]
+		if username == self.username:
 			return True
-		else:		
+		else:
 			return False
 
 class Credentials():	
