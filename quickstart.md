@@ -39,7 +39,7 @@ $ python
 El primer paso es importar el SDK:
 
 ```python
-import paybook as paybook_sdk
+import paybook.sdk as paybook_sdk
 ```
 
 ####4. Configuramos el SDK
