@@ -14,7 +14,7 @@
 
 A lo largo de este tutorial te enseñaremos como consumir API SYNC por medio del SDK de python. Al terminar este tutorial habrás podido crear nuevos usuarios en Paybook, sincronizar algunas instituciones de estos usuarios y visualizar las transacciones sincronizadas.
 
-La documentación completa del SDK la puedes consultar [aquí](link) 
+La documentación completa del SDK la puedes consultar [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md) 
 
 
 ##En la consola:
@@ -150,6 +150,8 @@ if len(attachments) > 0:
 ### Siguientes Pasos
 
 - Revisar el tutorial de como sincronizar una institución bancaria [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.md)
+
+- Puedes consultar y analizar la documentación completa del SDK [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
 - Puedes consultar y analizar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
 

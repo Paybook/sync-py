@@ -66,11 +66,11 @@ Descripción de los métodos de la clase:
 Estructura de los atributos de las clases:
 
 | Account_type         | Attachment_type | Country |                                 
-| -------------- | 
+| -------------- | -------------- | -------------- | 
 | + str id_account_type <br> + str name | + str id_attachment_type <br> + str name | + str id_country <br> + str name <br> + str code |
 
 | Site         | Credential_structure | Site_organization |                                 
-| -------------- | 
+| -------------- | -------------- | -------------- | 
 | + str id_site <br> + str id_site_organization <br> + str id_site_organization_type <br> + str name <br> + list credentials | + str name <br> + str type <br> + str label <br> + bool required <br> + str username | + str id_site_organization <br> + str id_site_organization_type <br> + str id_country <br> + str name <br> + str avatar <br> + str small_cover <br> + str cover |
 
 Descripción de los métodos de la clase:
