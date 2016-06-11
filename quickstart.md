@@ -149,7 +149,15 @@ if len(attachments) > 0:
 
 ### Siguientes Pasos
 
-- Puedes consultar y analizar la documentación de los métodos y funcionalidad del sdk [aquí](link)
+- Revisar el tutorial de como sincronizar una institución bancaria [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.md)
+
+- Puedes consultar y analizar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
+
+- Acceder a nuestro proyecto en Github y checar todos los recursos que Paybook tiene para ti [clic aquí](https://github.com/Paybook)
+
+
+
+
 
 
 
