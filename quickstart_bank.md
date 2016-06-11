@@ -10,6 +10,14 @@ A lo largo de este tutorial te enseñaremos como sincronizar una institución ba
 
 ##En la consola:
 
+Este tutorial está basado en el script [quickstart_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo:
+
+```
+$ python quickstart_bank.py
+```
+
+Una vez que has ejecutado el archivo podemos continuar analizando el código.
+
 ####1. Obetenemos un usuario e iniciamos sesión:
 El primer paso para realizar la mayoría de las acciones en Paybook es tener un usuario e iniciar una sesión, por lo tanto haremos una consulta de nuestra lista de usuarios y seleccionaremos el usuario con el que deseamos trabajar. Una vez que tenemos al usuario iniciamos sesión con éste.
 
@@ -26,7 +34,6 @@ print session.token
 Recordemos que Paybook tiene un catálogo de instituciones que podemos seleccionar para sincronizar nuestros usuarios. A continuación consultaremos este catálogo:
 
 ```python
-sat_site = None
 sites = paybook_sdk.Catalogues.get_sites(session=session)
 for site in sites:
 	print site.name
@@ -53,14 +60,24 @@ El catálogo muestra las siguienes instituciones:
 
 Para efectos de este tutorial seleccionaremos **Banorte en su empresa** pero tu puedes seleccionar la institución de la cual tienes credenciales.
 
+```python
+bank_site = None
+sites = paybook_sdk.Catalogues.get_sites(session=session)
+for site in sites:
+	print site.name
+	if site.name == 'Banorte en su empresa':
+	   	bank_site = site
+print 'Bank site: ' + bank_site.name + ' ' + bank_site.id_site
+```
+
 ####3. Registramos las credenciales:
 
 A continuación registraremos las credenciales de nuestro banco, es decir, el usuario y contraseña que nos proporcionó el banco para acceder a sus servicios en línea:
 
 ```python
 CREDENTIALS = {
-	'username' : 'my_bank_username',
-	'password' : 'my_bank_password'
+	'username' : BANK_USERNAME,
+	'password' : BANK_PASSWORD
 }#End of CREDENTIALS
 bank_credentials = paybook_sdk.Credentials(session=session,id_site=bank_site.id_site,credentials=CREDENTIALS)
 print bank_credentials.id_credential + ' ' + bank_credentials.username
@@ -84,6 +101,7 @@ Checamos el estatus de las credenciales:
 
 ```python
 sync_status = bank_credentials.get_status(session=session)
+print sync_status
 ```
 ####5. Analizamos el estatus:
 
@@ -96,7 +114,7 @@ El estatus se muestra a continuación:
 Esto quiere decir que las credenciales han sido registradas y se están validando. La institución bancaria a sincronizar i.e. Banorte, requiere de token por lo que debemos esperar un estatus 410, para esto podemos polear mediante un bucle sobre los estados de las credenciales hasta que se tenga un estatus 410, es decir, que el token sea solicitado por el SDK:
 
 ```python
-print 'Esperando por estatus 410 ... '
+print 'Esperando por token ... '
 status_410 = None
 while status_410 is None:
 	print ' . . . '
@@ -104,9 +122,9 @@ while status_410 is None:
 	sync_status = bank_credentials.get_status(session=session)
 	print sync_status
 	for status in sync_status:
-		code = status['code']
-		if code == 410:
-			status_410 = status
+	    code = status['code']
+	    if code == 410:
+	        status_410 = status
 ```
 
 **Importante:** En este paso también se debe contemplar que en vez de un código 410 (esperando token) se puede obtener un código 401 (credenciales inválidas) lo que implica que se deben registrar las credenciales correctas, por lo que la el bucle se puede módificar para agregar esta lógica.
@@ -117,23 +135,29 @@ Ahora hay que ingresar el valor del token, el cual lo podemos solicitar en pytho
 ```python
 twofa_value = raw_input('Ingresa el código de seguridad: ')
 twofa = bank_credentials.set_twofa(session=session,twofa_value=twofa_value)
+print 'Twofa: ' + str(twofa)
 ```
 
 Una vez que el token bancario es enviado, volvemos a polear por medio de un bucle buscando que el estatus sea 102, es decir, que el token haya sido validado y ahora Paybook se encuentre sincronzando a nuestra institución bancaria, o bien, buscando el estatus 401, es decir, que el token no haya sido validado y por tanto lo tengamos que volver a enviar:
 
 ```python
+print 'Esperando validacion de token ... '
+status_102_or_401 = None
 while status_102_or_401 is None:
-	print ' . . . '
-	time.sleep(3)
-	sync_status = bank_credentials.get_status(session=session)
-	print sync_status
-	for status in sync_status:
-		code = status['code']
-		if code == 102 or code == 401:
-			status_102_or_401 = status
+    print ' . . . '
+    time.sleep(3)
+    sync_status = bank_credentials.get_status(session=session)
+    print sync_status
+    for status in sync_status:
+        code = status['code']
+        if code == 102 or code == 401:
+            status_102_or_401 = status
+	if status['code'] == 401:
+	    print 'Error en credenciales'
+	    sys.exit()
 ```
 
-Checamos el código del estatus y de ser 401 se programa una rutina para pedir el token nuevamente:
+Es importante checar el código 401 que indica que el token introducido es incorrecto, por lo que se puede programar una rutina para pedir el token nuevamente:
 
 ```python
 if status['code'] == 401:
@@ -148,16 +172,17 @@ En caso de que el estatus sea 102 se evitará la validación previa y podremos c
 Una vez que la sincronización se encuentra en proceso (código 102), podemos construir un bucle para polear y esperar por el estatus de fin de sincronización (código 200).
 
 ```python
+print 'Esperando sincronizacion ... '
 status_200 = None
 while status_200 is None:
-	print ' . . . '
-	time.sleep(3)
-	sync_status = bank_credentials.get_status(session=session)
-	print sync_status
-	for status in sync_status:
-		code = status['code']
-		if code == 200:
-			status_200 = status
+    print ' . . . '
+    time.sleep(3)
+    sync_status = bank_credentials.get_status(session=session)
+    print sync_status
+    for status in sync_status:
+        code = status['code']
+        if code == 200:
+            status_200 = status
 ```
 
 ####8. Consultamos las transacciones de la institución bancaria:
@@ -173,12 +198,11 @@ Podemos desplegar información de las transacciones:
 ```python
 i = 0
 for transaction in transactions:
-	i+=1
-	print str(i) + '. ' + transaction.description + ' $' + str(transaction.amount) 
+    i+=1
+    print str(i) + '. ' + transaction.description + ' $' + str(transaction.amount) 
 ```
 
 ¡Felicidades! has terminado con este tutorial.
-
 
 ###Siguientes Pasos
 

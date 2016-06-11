@@ -55,8 +55,8 @@ try:
 		if status['code'] == 401:
 		    print 'Error en credenciales'
 		    sys.exit()
-	status_200 = None
 	print 'Esperando sincronizacion ... '
+	status_200 = None
 	while status_200 is None:
 	    print ' . . . '
 	    time.sleep(3)
@@ -66,8 +66,8 @@ try:
 	        code = status['code']
 	        if code == 200:
 	            status_200 = status
-	i = 0
 	transactions = paybook_sdk.Transaction.get(session=session)
+	i = 0
 	for transaction in transactions:
 	    i+=1
 	    print str(i) + '. ' + transaction.description + ' $' + str(transaction.amount)
