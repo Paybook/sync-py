@@ -28,4 +28,7 @@ class Session(main.Paybook):
 		Session.__call__(endpoint='sessions/' + token + '',method='delete')# If error, raise Error
 		return True
 
+	def set_token(self,token):
+		self.token = token
+
 	

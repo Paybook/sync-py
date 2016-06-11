@@ -31,8 +31,9 @@ class Paybook():
 			conn = requests.get(url,data=data,params=params,headers=headers)
 		elif method == 'delete':
 			conn = requests.delete(url,data=data,params=params,headers=headers)
+		Paybook.log(Paybook.__INDENT__ + 'API Response code: ' + str(conn.status_code))
 		if conn.status_code == 200:
-			Paybook.log('API Response: ')
+			Paybook.log('Success response: ')
 			try:# JSON responses:
 				Paybook.log(Paybook.__INDENT__ + str(conn.json()))
 				return conn.json()['response']
@@ -40,21 +41,20 @@ class Paybook():
 				Paybook.log(Paybook.__INDENT__ + str(conn.content))
 				return conn.content
 		else:
-			Paybook.log('API Response: ')
-			Paybook.log(Paybook.__INDENT__ + str(conn.json()))
+			Paybook.log('Error catched')
 			raise Paybook.__get_api_error__(conn)
 
 	@staticmethod
 	def __get_api_error__(conn):
 		try:
-			error_response = conn.json()
-			api_error = Error(error_response['code'],error_response['response'],error_response['message'],error_response['status'])
+			api_error = Error(conn.status_code,'','','')
 		except Exception as e:
-			api_error = Error('Connection Error',500)
+			api_error = Error(500,'Connection Error')
 		return api_error
 
 	@staticmethod
 	def log(message):
+		# print message
 		if Paybook.logger is not None:
 			Paybook.logger.debug(message)
 
