@@ -4,16 +4,19 @@ import main
 
 class Session(main.Paybook):
 
-	def __init__(self,user=None):
-		Session.log('\n')
-		Session.log('Session.__init__')
+	def __init__(self,user=None,token=None):
 		self.user = user
-		data = {
-			'api_key' : Session.api_key, 
-			'id_user' : self.user.id_user
-		}#End of data
-		session_json = Session.__call__(endpoint='sessions',method='post',data=data)
-		self.token = session_json['token']
+		if token:
+			self.token = token
+		else:
+			Session.log('\n')
+			Session.log('Session.__init__')
+			data = {
+				'api_key' : Session.api_key, 
+				'id_user' : self.user.id_user
+			}#End of data
+			session_json = Session.__call__(endpoint='sessions',method='post',data=data)
+			self.token = session_json['token']
 
 	def verify(self):
 		Session.log('\n')
