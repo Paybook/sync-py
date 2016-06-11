@@ -5,7 +5,7 @@ import main
 
 class Credentials(main.Paybook):
 
-	def __init__(self,session=None,id_user=None,id_site=None,credentials=None,credentials_json=None,id_credential=None):# If it already exists it retrieves the existing one
+	def __init__(self,session=None,id_user=None,id_site=None,credentials=None,credentials_json=None):# If it already exists it retrieves the existing one
 		Credentials.log('\n')
 		Credentials.log('Credentials.__init__')
 		self.id_site = None
