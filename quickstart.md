@@ -14,12 +14,6 @@
 
 A lo largo de este tutorial te enseñaremos como consumir API SYNC por medio del SDK de python. Al terminar este tutorial habrás podido crear nuevos usuarios en Paybook, sincronizar algunas instituciones de estos usuarios y visualizar las transacciones sincronizadas.
 
-Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, CIEC y RFC y ejecutarlo:
-
-```
-$ python quickstart.py
-```
-
 La documentación completa del SDK la puedes consultar [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md) 
 
 ##En la consola:
@@ -32,6 +26,14 @@ Para consumir el API de Paybook desde python lo primero que tenemos que hacer es
 $ sudo pip install paybook==1.5
 ```
 
+Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, CIEC y RFC y ejecutarlo:
+
+```
+$ python quickstart.py
+```
+
+Una vez que has ejecutado el archivo podemos continuar analizando el código.
+
 ####2. Iniciamos pyhton:
 Una vez instalada la librería de python (SDK) ejecutamos el interprete de python desde la consola (puedes también crear un archivo con extensión .py con todos los comandos y ejecutarlo al final): 
 
@@ -41,9 +43,11 @@ $ python
 ```
 
 ####3. Importamos paybook
-El primer paso es importar el SDK:
+El primer paso es importar el SDK y algunas dependencias:
 
 ```python
+import time
+import sys
 import paybook.sdk as paybook_sdk
 ```
 
@@ -51,7 +55,7 @@ import paybook.sdk as paybook_sdk
 Una vez importado el SDK tenemos que configurarlo, para esto únicamente se necesita tu API KEY de Paybook.
 
 ```python
-paybook_sdk.Paybook('YOUR_PAYBOOK_API_KEY')
+paybook_sdk.Paybook(YOUR_API_KEY)
 ```
 
 ####5. Creamos un usuario:
@@ -68,8 +72,8 @@ Para verificar que el usuario creado en el paso 5 se haya creado corréctamente 
 
 ```python
 my_users = paybook_sdk.User.get()
-for user in my_users:
-	print user.name
+	for user in my_users:
+	    print user.name
 ```
 
 ####7. Creamos una nueva sesión:
@@ -94,9 +98,10 @@ Paybook tiene un catálogo de instituciones que podemos sincronizar por usuario.
 sat_site = None
 sites = paybook_sdk.Catalogues.get_sites(session=session)
 for site in sites:
-	print site.name
+	print site.name.encode('utf-8')
 	if site.name == 'CIEC':
-		sat_site = site
+	    sat_site = site
+print 'SAT site: ' + sat_site.id_site + ' ' + sat_site.id_site
 ```
 
 ####10. Configuramos nuestras credenciales del SAT:
@@ -108,6 +113,7 @@ credentials_data = {
 	'password' : 'CIEC'
 }
 sat_credentials = paybook_sdk.Credentials(session=session,id_site=sat_site.id_site,credentials=credentials_data)
+print sat_credentials.username
 ```
 
 ####11. Checamos el estatus de sincronización de las credenciales creadas y esperamos a que la sincronización finalice:
@@ -116,6 +122,7 @@ Una vez que has registrado las credenciales de una institución para un usuario 
 ```python
 sat_sync_completed = False
 while not sat_sync_completed: 
+	print 'Polling ... '
 	time.sleep(5)
 	sat_status = sat_credentials.get_status(session=session)
 	for status in sat_status:
@@ -142,12 +149,16 @@ print 'Archivos XML/PDF del SAT: ' + str(len(attachments))
 Podemos descargar estos archivos:
 ```python
 if len(attachments) > 0:
-	id_attachment = attachments[0]['url']
-	xml_attachment = paybook_sdk.Attachment.get(session=session,id_attachment=id_attachment)
-	print INDENT + str(xml_attachment)
-	id_attachment = attachments[0]['url']
-	pdf_attachment = paybook_sdk.Attachment.get(session=session,id_attachment=id_attachment)
-	print INDENT + str(pdf_attachment)		
+	i = 0
+	for attachment in attachments:
+		i+=1
+		id_attachment = attachment.url[1:]
+		print id_attachment
+		attachment_content = paybook_sdk.Attachment.get(session=session,id_attachment=id_attachment)
+		print 'Attachment ' + str(i) + ':'
+		print str(attachment_content)
+		if i == 2:
+			break	
 ```
 
 ¡Felicidades! has terminado con este tutorial. 
