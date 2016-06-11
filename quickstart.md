@@ -24,7 +24,7 @@ La documentación completa del SDK la puedes consultar [aquí](https://github.co
 Para consumir el API de Paybook desde python lo primero que tenemos que hacer es instalar la libreria de paybook haciendo uso del paquete de instalaciones de python:
 
 ```
-$ sudo pip install paybook
+$ sudo pip install paybook==1.5
 ```
 
 ####2. Iniciamos pyhton:
