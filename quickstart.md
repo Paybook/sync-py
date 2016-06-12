@@ -165,7 +165,7 @@ if len(attachments) > 0:
 
 ### Siguientes Pasos
 
-- Revisar el tutorial de como sincronizar una institución bancaria [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.md)
+- Revisar el tutorial de como sincronizar una institución bancaria [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 - Puedes consultar y analizar la documentación completa del SDK [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
