@@ -6,8 +6,11 @@
 
 Antes de consultar la documentación puedes tomar alguno de nuestros tutoriales:
 
-- [Quickstart general](https://github.com/Paybook/sync-py/blob/master/quickstart.md)
-- [Quickstart para sincronizar una cuenta bancaria](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.md)
+- [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
+
+- [Quickstart para sincronizar una cuenta bancaria con credenciales sencillas (usuario y contraseña)](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.md)
+
+- [Quickstart para sincronizar una cuenta bancaria con token (usuario y contraseña)](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 ## Recordatorios:
 

@@ -1,19 +1,19 @@
 
-##QUICKSTART BANCO CON TOKEN
+##QUICKSTART BANCO NORMAL
 
-A lo largo de este tutorial te enseñaremos como sincronizar una institución bancaria de un usuario. En el tutorial asumiremos que ya hemos creado usuarios y por tanto tenemos usuarios ligados a nuestra API KEY, que hemos instalado el SDK de python y hecho las configuraciones pertinentes. Si tienes dudas acerca de esto te recomendamos que antes de tomar este tutorial consultes el [Quickstart General](https://github.com/Paybook/sync-py/blob/master/quickstart.md).  
+A lo largo de este tutorial te enseñaremos como sincronizar una institución bancaria normal, es decir, aquella que solo requiere una autenticación (usuario y contraseña), ejemplos de estas instituciones pueden ser Banamex o Santander. En el tutorial asumiremos que ya hemos creado usuarios y por tanto tenemos usuarios ligados a nuestra API KEY, que hemos instalado el SDK de python y hecho las configuraciones pertinentes. Si tienes dudas acerca de esto te recomendamos que antes de tomar este tutorial consultes el [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md) ya que aquí se abordan los temas de creación de usuarios, sesiones y demás.  
 
 ### Requerimientos
 
-1. Haber consultado el tutorial [Quickstart General](https://github.com/Paybook/sync-py/blob/master/quickstart.md)
-2. Tener credenciales de alguna institución bancaria del catálogo de Paybook
+1. Haber consultado el tutorial [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
+2. Tener credenciales de alguna institución bancaria que cuente con autenticación simple (usuario y contraseña)
 
 ##En la consola:
 
-Este tutorial está basado en el script [quickstart_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_bank.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo:
+Este tutorial está basado en el script [quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo:
 
 ```
-$ python quickstart_bank.py
+$ python quickstart_normal_bank.py
 ```
 
 Una vez que has ejecutado el archivo podemos continuar analizando el código.
@@ -58,7 +58,7 @@ El catálogo muestra las siguienes instituciones:
 15. Empresas
 16. InbuRed
 
-Para efectos de este tutorial seleccionaremos **Banorte en su empresa** pero tu puedes seleccionar la institución de la cual tienes credenciales.
+Para efectos de este tutorial seleccionaremos **SuperNET Particulares (Santander)** pero tu puedes seleccionar la institución de la cual tienes credenciales.
 
 ```python
 bank_site = None
@@ -91,11 +91,8 @@ Una vez que has registrado las credenciales de una institución bancaria para un
 | 100 | Credenciales registradas   | 
 | 101 | Validando credenciales  | 
 | 401      | Credenciales inválidas    |
-| 410      | Esperando token   |
 | 102      | La institución se está sincronizando    |
 | 200      | La institución ha sido sincronizada    | 
-
-**Importante** El código 401 se puede presentar múltiples veces en caso de que la autenticación con la institución bancaria requiera múltiples pasos e.g. usuario, contraseña (primera autenticación) y además token (segunda autenticación). Entonces el código 401 únicamente le puede preceder a un código 100 (después de introducir usuario y password), o bien, a un código 401 (después de haber introducido un token).
 
 Checamos el estatus de las credenciales:
 
@@ -111,37 +108,10 @@ El estatus se muestra a continuación:
 [{u'code': 100}, {u'code': 101}]
 ```
 
-Esto quiere decir que las credenciales han sido registradas y se están validando. La institución bancaria a sincronizar i.e. Banorte, requiere de token por lo que debemos esperar un estatus 410, para esto podemos polear mediante un bucle sobre los estados de las credenciales hasta que se tenga un estatus 410, es decir, que el token sea solicitado por el SDK:
+Esto quiere decir que las credenciales han sido registradas y se están validando. Puesto que la institución bancaria a sincronizar i.e. Santander, no requiere autenticación de dos pasos e.g. token o captcha podemos únicamente checar el estatus buscando que las credenciales hayan sido validadads (código 102) o bien hayan sido inválidas (código 401)
 
 ```python
-print 'Esperando por token ... '
-status_410 = None
-while status_410 is None:
-	print ' . . . '
-	time.sleep(3)
-	sync_status = bank_credentials.get_status(session=session)
-	print sync_status
-	for status in sync_status:
-	    code = status['code']
-	    if code == 410:
-	        status_410 = status
-```
-
-**Importante:** En este paso también se debe contemplar que en vez de un código 410 (esperando token) se puede obtener un código 401 (credenciales inválidas) lo que implica que se deben registrar las credenciales correctas, por lo que la el bucle se puede módificar para agregar esta lógica.
-
-####6. Enviar token bancario
-Ahora hay que ingresar el valor del token, el cual lo podemos solicitar en python a través de la interfaz raw_input:
-
-```python
-twofa_value = raw_input('Ingresa el código de seguridad: ')
-twofa = bank_credentials.set_twofa(session=session,twofa_value=twofa_value)
-print 'Twofa: ' + str(twofa)
-```
-
-Una vez que el token bancario es enviado, volvemos a polear por medio de un bucle buscando que el estatus sea 102, es decir, que el token haya sido validado y ahora Paybook se encuentre sincronzando a nuestra institución bancaria, o bien, buscando el estatus 401, es decir, que el token no haya sido validado y por tanto lo tengamos que volver a enviar:
-
-```python
-print 'Esperando validacion de token ... '
+print 'Esperando validacion de credenciales ... '
 status_102_or_401 = None
 while status_102_or_401 is None:
     print ' . . . '
@@ -152,20 +122,10 @@ while status_102_or_401 is None:
         code = status['code']
         if code == 102 or code == 401:
             status_102_or_401 = status
-	if status['code'] == 401:
-	    print 'Error en credenciales'
-	    sys.exit()
+    if status['code'] == 401:
+        print 'Error en credenciales'
+        sys.exit()
 ```
-
-Es importante checar el código 401 que indica que el token introducido es incorrecto, por lo que se puede programar una rutina para pedir el token nuevamente:
-
-```python
-if status['code'] == 401:
-	None
-	# Rutina para pedir el token nuevamente	
-```
-
-En caso de que el estatus sea 102 se evitará la validación previa y podremos continuar con los siguientes pasos.
 
 ####7. Esperamos a que la sincronización termine
 
@@ -205,6 +165,8 @@ for transaction in transactions:
 ¡Felicidades! has terminado con este tutorial.
 
 ###Siguientes Pasos
+
+- Revisar el tutorial de como sincronizar una institución bancaria con token [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 - Puedes consultar y analizar la documentación completa del SDK [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 

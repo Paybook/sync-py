@@ -29,7 +29,7 @@ $ sudo pip install paybook==1.5
 Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, CIEC y RFC y ejecutarlo:
 
 ```
-$ python quickstart.py
+$ python quickstart_sat.py
 ```
 
 Una vez que has ejecutado el archivo podemos continuar analizando el código.
@@ -165,7 +165,9 @@ if len(attachments) > 0:
 
 ### Siguientes Pasos
 
-- Revisar el tutorial de como sincronizar una institución bancaria [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
+- Revisar el tutorial de como sincronizar una institución bancaria con credenciales simples (usuario y contraseña) [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.md)
+
+- Revisar el tutorial de como sincronizar una institución bancaria con token [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 - Puedes consultar y analizar la documentación completa del SDK [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
