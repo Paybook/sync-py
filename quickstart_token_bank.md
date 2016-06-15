@@ -97,15 +97,15 @@ Una vez que has registrado las credenciales de una institución bancaria para un
 | 102      | La institución se está sincronizando    |
 | 200      | La institución ha sido sincronizada    | 
 
-## Maquina de estados exitósos:
+## Maquina de estados exitosos:
 
-![Instituciones](https://github.com/Paybook/sync-py/blob/master/token.png "Instituciones")
+![Success](https://github.com/Paybook/sync-py/blob/master/token.png "Success")
 
 ## Maquina de estados de error:
 
-![Instituciones](https://github.com/Paybook/sync-py/blob/master/token.png "Instituciones")
+![Errores](https://github.com/Paybook/sync-py/blob/master/error.png "Errores")
 
-**Importante** El código 401 se puede presentar múltiples veces en caso de que la autenticación con la institución bancaria requiera múltiples pasos e.g. usuario, contraseña (primera autenticación) y además token (segunda autenticación). Entonces el código 401 únicamente le puede preceder a un código 100 (después de introducir usuario y password), o bien, a un código 401 (después de haber introducido un token).
+**Importante** El código 401 se puede presentar múltiples veces en caso de que la autenticación con la institución bancaria requiera múltiples pasos e.g. usuario, contraseña (primera autenticación) y además token (segunda autenticación). Entonces el código 401 únicamente le puede preceder a un código 100 (después de introducir usuario y password), o bien, a un código 401 (después de haber introducido un token). El código 405 indica que el acceso a la cuenta bancaria está bloqueado y, por otro lado, el código 406 indica que hay una sesión iniciada en esa cuenta por lo que Paybook no puede conectarse.
 
 Checamos el estatus de las credenciales:
 
