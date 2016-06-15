@@ -92,7 +92,11 @@ print 'Session verified: ' + str(session_verified)
 ```
 
 ####9. Consultamos el catálogo de instituciones que podemos sincronizar y extraemos el SAT:
-Paybook tiene un catálogo de instituciones que podemos sincronizar por usuario. A continuación consultaremos este catálogo y seleccionaremos el sitio del SAT para sincronizar las facturas del usuario que hemos creado en el paso 5:
+Paybook tiene un catálogo de instituciones que podemos sincronizar por usuario:
+
+![Instituciones](https://github.com/Paybook/sync-py/blob/master/sites.png "Instituciones")
+
+A continuación consultaremos este catálogo y seleccionaremos el sitio del SAT para sincronizar las facturas del usuario que hemos creado en el paso 5:
 
 ```python
 sat_site = None
@@ -117,11 +121,11 @@ print sat_credentials.username
 ```
 
 ####11. Checamos el estatus de sincronización de las credenciales creadas y esperamos a que la sincronización finalice:
-Cada vez que registamos unas credenciales Paybook levanta un Job que se encargará de validar esas credenciales y posteriormente sincronizar las transacciones. Este Job se puede representar como una maquina de estados como en el siguiente diagrama:
+Cada vez que registamos unas credenciales Paybook levanta un Job que se encargará de validar esas credenciales y posteriormente sincronizar las transacciones. Este Job se puede representar como una maquina de estados:
 
 ![Job Estatus](https://github.com/Paybook/sync-py/blob/master/normal.png "Job Estatus")
 
-Por lo que una vez registradas las credenciales se obtiene el primer estado (Código 100), una vez que el Job ha empezado se obtiene el segundo estado (Código 200), y de aquí en caso de que las credenciales sean válidas. Se puede proceder a los estatus 202, 201 o 200, que indican que la sincronización está pendiente (sigue en proceso), no se encontraron transacciones, o bien, la sincronización ha terminado respectivamente. El SDK proporciona un método para consultar el estado actual del Job, el cual se puede consultar constantemente hasta que se obtenga el estado requerido por el usuario, para este ejemplo especifico consultamos el estatus hasta que se obtenga un código 200, es decir, que la sincronización haya terminado:
+Una vez registradas las credenciales se obtiene el primer estado (Código 100), posteriormente una vez que el Job ha empezado se obtiene el segundo estado (Código 101). Después de aquí, en caso de que las credenciales sean válidas, prosiguen los estados 202, 201 o 200. Estos indican que la sincronización está pendiente (sigue en proceso, código 201), que no se encontraron transacciones (código 202), o bien, la sincronización ha terminado (código 200). El SDK proporciona un método para consultar el estado actual del Job, el cual se puede consultar constantemente hasta que se obtenga el estado requerido por el usuario, para este ejemplo especifico consultamos el estatus hasta que se obtenga un código 200, es decir, que la sincronización haya terminado:
 
 ```python
 sat_sync_completed = False
