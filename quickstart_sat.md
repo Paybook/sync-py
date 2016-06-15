@@ -1,12 +1,6 @@
 
 ##QUICKSTART SAT
 
-### Estatus 
-
-Estatus
-
-![Job Estatus](https://github.com/Paybook/sync-py/blob/master/normal.png "Job Estatus")
-
 ### Requerimientos
 
 1. Manejo de shell/bash
@@ -123,7 +117,11 @@ print sat_credentials.username
 ```
 
 ####11. Checamos el estatus de sincronización de las credenciales creadas y esperamos a que la sincronización finalice:
-Una vez que has registrado las credenciales de una institución para un usuario en Paybook el siguiente paso consiste en checar el estatus de las credenciales, esto es necesario para verificar que las credenciales introducidas sean correctas y en caso de que no (código 410), introducir las correctas, o bien, en caso de que las credenciales sean correctas checar el estatus de la sincronización, es decir, si está en proceso (código 102) o si ya ha finalizado (código 200):
+Cada vez que registamos unas credenciales Paybook levanta un Job que se encargará de validar esas credenciales y posteriormente sincronizar las transacciones. Este Job se puede representar como una maquina de estados como en el siguiente diagrama:
+
+![Job Estatus](https://github.com/Paybook/sync-py/blob/master/normal.png "Job Estatus")
+
+Por lo que una vez registradas las credenciales se obtiene el primer estado (Código 100), una vez que el Job ha empezado se obtiene el segundo estado (Código 200), y de aquí en caso de que las credenciales sean válidas. Se puede proceder a los estatus 202, 201 o 200, que indican que la sincronización está pendiente (sigue en proceso), no se encontraron transacciones, o bien, la sincronización ha terminado respectivamente. El SDK proporciona un método para consultar el estado actual del Job, el cual se puede consultar constantemente hasta que se obtenga el estado requerido por el usuario, para este ejemplo especifico consultamos el estatus hasta que se obtenga un código 200, es decir, que la sincronización haya terminado:
 
 ```python
 sat_sync_completed = False
