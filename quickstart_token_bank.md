@@ -86,6 +86,8 @@ print bank_credentials.id_credential + ' ' + bank_credentials.username
 
 Una vez que has registrado las credenciales de una institución bancaria para un usuario en Paybook el siguiente paso consiste en checar el estatus de las credenciales, el estatus será una lista con los diferentes estados por los que las credenciales han pasado, el último será el estado actual. A continuación se describen los diferentes estados de las credenciales:
 
+## Códigos:
+
 | Código         | Descripción                                |                                
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | 100 | Credenciales registradas   | 
@@ -94,6 +96,14 @@ Una vez que has registrado las credenciales de una institución bancaria para un
 | 410      | Esperando token   |
 | 102      | La institución se está sincronizando    |
 | 200      | La institución ha sido sincronizada    | 
+
+## Maquina de estados exitósos:
+
+![Instituciones](https://github.com/Paybook/sync-py/blob/master/token.png "Instituciones")
+
+## Maquina de estados de error:
+
+![Instituciones](https://github.com/Paybook/sync-py/blob/master/token.png "Instituciones")
 
 **Importante** El código 401 se puede presentar múltiples veces en caso de que la autenticación con la institución bancaria requiera múltiples pasos e.g. usuario, contraseña (primera autenticación) y además token (segunda autenticación). Entonces el código 401 únicamente le puede preceder a un código 100 (después de introducir usuario y password), o bien, a un código 401 (después de haber introducido un token).
 
