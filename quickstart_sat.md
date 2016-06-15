@@ -1,6 +1,12 @@
 
 ##QUICKSTART SAT
 
+### Estatus 
+
+Estatus
+
+![Job Estatus](https://github.com/Paybook/sync-py/blob/master/normal.png "Job Estatus")
+
 ### Requerimientos
 
 1. Manejo de shell/bash
