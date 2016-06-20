@@ -10,7 +10,7 @@ A lo largo de este tutorial te enseñaremos como sincronizar una institución ba
 
 ##Ejecución:
 
-Este tutorial está basado en el script [quickstart_normal_bank.py](quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py) por lo que puedes descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo en tu equipo:
+Este tutorial está basado en el script [quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py) por lo que puedes descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo en tu equipo:
 
 ```
 $ python quickstart_normal_bank.py
@@ -18,7 +18,7 @@ $ python quickstart_normal_bank.py
 
 Una vez que has ejecutado el archivo podemos continuar analizando el código.
 
-####1. Obetenemos un usuario e iniciamos sesión:
+####1. Obtenemos un usuario e iniciamos sesión:
 El primer paso para realizar la mayoría de las acciones en Paybook es tener un usuario e iniciar una sesión, por lo tanto haremos una consulta de nuestra lista de usuarios y seleccionaremos el usuario con el que deseamos trabajar. Una vez que tenemos al usuario iniciamos sesión con éste.
 
 
@@ -127,7 +127,7 @@ while status_102_or_401 is None:
         sys.exit()
 ```
 
-####7. Esperamos a que la sincronización termine
+####6. Esperamos a que la sincronización termine
 
 Una vez que la sincronización se encuentra en proceso (código 102), podemos construir un bucle para polear y esperar por el estatus de fin de sincronización (código 200).
 
@@ -145,7 +145,7 @@ while status_200 is None:
             status_200 = status
 ```
 
-####8. Consultamos las transacciones de la institución bancaria:
+####7. Consultamos las transacciones de la institución bancaria:
 
 Una vez que la sincronización ha terminado podemos consultar las transacciones:
 
@@ -166,13 +166,13 @@ for transaction in transactions:
 
 ###Siguientes Pasos
 
-- Revisar el tutorial de como sincronizar una institución bancaria con token [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
+- Revisar el tutorial de como sincronizar una institución bancaria con token [aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 - Puedes consultar y analizar la documentación completa de la librearía [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
 - Puedes consultar y analizar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
 
-- Acceder a nuestro proyecto en Github y checar todos los recursos que Paybook tiene para ti [clic aquí](https://github.com/Paybook)
+- Acceder a nuestro proyecto en Github y checar todos los recursos que Paybook tiene para ti [aquí](https://github.com/Paybook)
 
 
 
