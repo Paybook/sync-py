@@ -17,7 +17,7 @@ try:
 	sites = paybook_sdk.Catalogues.get_sites(session=session)
 	for site in sites:
 	    print 'Bank site: ' + site.name + ' ' + site.id_site
-	    if site.name == 'BancaNet Personal':
+	    if site.name == 'SuperNET Particulares':
 	    	bank_site = site
 	CREDENTIALS = {
 	    'username' : BANK_USERNAME,

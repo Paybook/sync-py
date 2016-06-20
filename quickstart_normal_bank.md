@@ -1,16 +1,16 @@
 
 ##QUICKSTART BANCO NORMAL
 
-A lo largo de este tutorial te enseñaremos como sincronizar una institución bancaria normal, es decir, aquella que solo requiere una autenticación (usuario y contraseña), ejemplos de estas instituciones pueden ser Banamex o Santander. En el tutorial asumiremos que ya hemos creado usuarios y por tanto tenemos usuarios ligados a nuestra API KEY, que hemos instalado el SDK de python y hecho las configuraciones pertinentes. Si tienes dudas acerca de esto te recomendamos que antes de tomar este tutorial consultes el [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md) ya que aquí se abordan los temas de creación de usuarios, sesiones y demás.  
+A lo largo de este tutorial te enseñaremos como sincronizar una institución bancaria normal, es decir, aquella que solo requiere una autenticación (usuario y contraseña), ejemplos de estas instituciones pueden ser Banamex o Santander. En el tutorial asumiremos que ya hemos creado usuarios y por tanto tenemos usuarios ligados a nuestra API KEY, también asumiremos que hemos instalado la librería de python y hecho las configuraciones pertinentes. Si tienes dudas acerca de esto te recomendamos que antes de tomar este tutorial consultes el [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md) ya que aquí se abordan los temas de creación de usuarios y sesiones.  
 
 ### Requerimientos
 
 1. Haber consultado el tutorial [Quickstart para sincronizar al SAT](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
 2. Tener credenciales de alguna institución bancaria que cuente con autenticación simple (usuario y contraseña)
 
-##En la consola:
+##Ejecución:
 
-Este tutorial está basado en el script [quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py). Es recomendable descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo:
+Este tutorial está basado en el script [quickstart_normal_bank.py](quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py) por lo que puedes descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_BANK_USERNAME y YOUR_BANK_PASSWORD y ejecutarlo en tu equipo:
 
 ```
 $ python quickstart_normal_bank.py
@@ -23,10 +23,10 @@ El primer paso para realizar la mayoría de las acciones en Paybook es tener un 
 
 
 ```python
-user_list = paybook_sdk.User.get()
+user_list = paybook.User.get()
 user = user_list[0]
 print user.name + ' ' + user.id_user
-session = paybook_sdk.Session(user=user)
+session = paybook.Session(user=user)
 print session.token
 ```
 
@@ -34,7 +34,7 @@ print session.token
 Recordemos que Paybook tiene un catálogo de instituciones que podemos seleccionar para sincronizar nuestros usuarios. A continuación consultaremos este catálogo:
 
 ```python
-sites = paybook_sdk.Catalogues.get_sites(session=session)
+sites = paybook.Catalogues.get_sites(session=session)
 for site in sites:
 	print site.name
 ```
@@ -62,10 +62,10 @@ Para efectos de este tutorial seleccionaremos **SuperNET Particulares (Santander
 
 ```python
 bank_site = None
-sites = paybook_sdk.Catalogues.get_sites(session=session)
+sites = paybook.Catalogues.get_sites(session=session)
 for site in sites:
 	print site.name
-	if site.name == 'Banorte en su empresa':
+	if site.name == 'SuperNET Particulares':
 	   	bank_site = site
 print 'Bank site: ' + bank_site.name + ' ' + bank_site.id_site
 ```
@@ -79,7 +79,7 @@ CREDENTIALS = {
 	'username' : BANK_USERNAME,
 	'password' : BANK_PASSWORD
 }#End of CREDENTIALS
-bank_credentials = paybook_sdk.Credentials(session=session,id_site=bank_site.id_site,credentials=CREDENTIALS)
+bank_credentials = paybook.Credentials(session=session,id_site=bank_site.id_site,credentials=CREDENTIALS)
 print bank_credentials.id_credential + ' ' + bank_credentials.username
 ```
 ####4. Checamos el estatus
@@ -150,7 +150,7 @@ while status_200 is None:
 Una vez que la sincronización ha terminado podemos consultar las transacciones:
 
 ```python
-transactions = paybook_sdk.Transaction.get(session=session)
+transactions = paybook.Transaction.get(session=session)
 ```
 
 Podemos desplegar información de las transacciones:
@@ -168,7 +168,7 @@ for transaction in transactions:
 
 - Revisar el tutorial de como sincronizar una institución bancaria con token [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
-- Puedes consultar y analizar la documentación completa del SDK [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
+- Puedes consultar y analizar la documentación completa de la librearía [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
 - Puedes consultar y analizar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
 

@@ -28,7 +28,7 @@ $ pip install paybook
 **Importante: ** Es posible que la ejecución del comando anterior requiera permisos de super usuario (sudo) esto depende de como tengas configurado Python en tu equipo.
 
 ####2. Ejecutamos el Script:
-Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.py) por lo que puedes descargar el archivo y ejecutarlo en tu equipo:
+Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.py) por lo que puedes descargar el archivo, configurar los valores YOUR_API_KEY, YOUR_RFC y YOUR_CIEC y ejecutarlo en tu equipo:
 
 ```python
 python quickstart_sat.py
