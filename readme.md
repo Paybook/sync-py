@@ -46,7 +46,7 @@ Estructura de los atributos de la clase:
 				
 Descripción de los métodos de la clase:
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests accounts of a user | GET https://sync.paybook.com/v1/accounts | ```static list [Account] = Account.get(session=Session,id_user=str)```          |
 
@@ -60,7 +60,7 @@ Estructura de los atributos de la clase:
 		
 Descripción de los métodos de la clase:
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests attachments | GET https://sync.paybook.com/v1/attachments <br> GET https://sync.paybook.com/v1/attachments/:id_attachment <br> GET https://sync.paybook.com/v1/attachments/:id_attachment/extra | ```static list [Attachment] = Attachment.get(session=Session,id_user=str,id_attachment=str,extra=bool)```          |
 | Request the number of attachments | GET https://sync.paybook.com/v1/attachments/counts | ```static int attachments_count = Attachment.get_count(session=Session,id_user=str)```          |
@@ -79,7 +79,7 @@ Estructura de los atributos de las clases:
 
 Descripción de los métodos de la clase:
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Request account types | GET https://sync.paybook.com/v1/catalogues/account_types   | ```static list [Account_type] = Catalogues.get_account_types(session=Session,id_user=str)```          |
 | Request attachment types | GET https://sync.paybook.com/v1/catalogues/attachment_types   | ```static list [Attachment_type] = Catalogues.get_attachment_types(session=Session,id_user=str)```          |
@@ -97,7 +97,7 @@ Estructura de los atributos de la clase:
 				
 Descripción de los métodos de la clase:
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates or updates credentials | POST https://sync.paybook.com/v1/credentials | ```Credentials credentials = Credential(session=str,id_user=str,id_site=str,credentials=dict)```          |
 | Deletes credentials | DELETE https://sync.paybook.com/v1/credentials/:id_credential | ```static bool deleted Credentials.delete(session=Session,id_user=str,id_credential=str)```          |
@@ -117,7 +117,7 @@ Estructura de los atributos de la clase:
 Descripción de los métodos de la clase:
 
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates a session | POST https://sync.paybook.com/v1/sessions   | ```Session session = Session(user=str)```          |
 | Verify a session | GET https://sync.paybook.com/v1/sessions/:token/verify | ```bool verified = session.verify()```                  |
@@ -135,7 +135,7 @@ Estructura de los atributos de la clase:
 Descripción de los métodos de la clase:
 
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                  |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                  |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Requests number of transactions | GET https://sync.paybook.com/v1/transactions/count | ```static int transactions_count = Transaction.get_count(session=Session,id_user=str)```          |
 | Requests transactions | GET https://sync.paybook.com/v1/transactions | ```static list [Transaction] = Transaction.get(session=Session,id_user=str)```          |
@@ -151,7 +151,7 @@ Estructura de los atributos de la clase:
 Descripción de los métodos de la clase:
 
 
-| Action         | REST API ENDPOINT                                 | SDK METHOD                                 |
+| Action         | REST API ENDPOINT                                 | LIBRARY METHOD                                 |
 | -------------- | ---------------------------------------- | ------------------------------------ |
 | Creates a user | POST https://sync.paybook.com/v1/users   | ```User user = User(name=str,id_user=str)```          |
 | Deletes a user | DELETE https://sync.paybook.com/v1/users | ```static bool deleted = User.delete(id_user=str)```                  |

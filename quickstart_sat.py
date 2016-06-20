@@ -3,18 +3,18 @@ YOUR_API_KEY = 'YOUR_API_KEY'
 RFC = 'YOUR_RFC'
 CIEC = 'YOUR_CIEC'
 import time
-import paybook.sdk as paybook_sdk
+import paybook.sdk as paybook
 try:
-	paybook_sdk.Paybook(YOUR_API_KEY)
-	user = paybook_sdk.User(name='MY_USER')
-	my_users = paybook_sdk.User.get()
+	paybook.Paybook(YOUR_API_KEY)
+	user = paybook.User(name='MY_USER')
+	my_users = paybook.User.get()
 	for user in my_users:
 	    print user.name
-	session = paybook_sdk.Session(user)
+	session = paybook.Session(user)
 	session_verified = session.verify()
 	print 'Session verified: ' + str(session_verified)
 	sat_site = None
-	sites = paybook_sdk.Catalogues.get_sites(session=session,is_test=True)
+	sites = paybook.Catalogues.get_sites(session=session,is_test=True)
 	for site in sites:
 	    print site.name.encode('utf-8')
 	    if site.name == 'CIEC':
@@ -24,7 +24,7 @@ try:
 	    'rfc' : RFC,
 	    'password' : CIEC
 	}
-	sat_credentials = paybook_sdk.Credentials(session=session,id_site=sat_site.id_site,credentials=credentials_data)
+	sat_credentials = paybook.Credentials(session=session,id_site=sat_site.id_site,credentials=credentials_data)
 	print sat_credentials.username
 	sat_sync_completed = False
 	while not sat_sync_completed: 
@@ -35,9 +35,9 @@ try:
 			code = status['code']
 			if code == 200:
 				sat_sync_completed = True
-	sat_transactions = paybook_sdk.Transaction.get(session=session)
+	sat_transactions = paybook.Transaction.get(session=session)
 	print 'Facturas del SAT: ' + str(len(sat_transactions))
-	attachments = paybook_sdk.Attachment.get(session=session)
+	attachments = paybook.Attachment.get(session=session)
 	print 'Archivos XML/PDF del SAT: ' + str(len(attachments))
 	if len(attachments) > 0:
 		i = 0
@@ -45,11 +45,11 @@ try:
 			i+=1
 			id_attachment = attachment.url[1:]
 			print id_attachment
-			attachment_content = paybook_sdk.Attachment.get(session=session,id_attachment=id_attachment)
+			attachment_content = paybook.Attachment.get(session=session,id_attachment=id_attachment)
 			print 'Attachment ' + str(i) + ':'
 			print str(attachment_content)
 			if i == 2:
 				break
 	print 'Quickstart script executed successfully\n\n'
-except paybook_sdk.Error as error:
+except paybook.Error as error:
 	print 'Paybook error:  ' +  str(error.code)
