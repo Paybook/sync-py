@@ -11,6 +11,7 @@ try:
 	for user in my_users:
 	    print user.name
 	session = paybook.Session(user)
+	print 'Session token: ' + session.token
 	session_verified = session.verify()
 	print 'Session verified: ' + str(session_verified)
 	sat_site = None

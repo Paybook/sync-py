@@ -28,7 +28,7 @@ $ pip install paybook
 **Importante: ** Es posible que la ejecución del comando anterior requiera permisos de super usuario (sudo) esto depende de como tengas configurado Python en tu equipo.
 
 ####2. Ejecutamos el Script:
-Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart.py) por lo que puedes descargar el archivo y ejecutarlo de corrido en tu equipo:
+Este tutorial está basado en el script [quickstart.py](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.py) por lo que puedes descargar el archivo y ejecutarlo en tu equipo:
 
 ```python
 python quickstart_sat.py
@@ -71,10 +71,11 @@ my_users = paybook.User.get()
 ```
 
 ####7. Creamos una nueva sesión:
-Para sincronizar las facturas del SAT, o bien, las cuentas de una institución bancaria de un usuario primero tenemos que crear una sesión, la sesión estará ligada al usuario y tiene un proceso de expiración de 5 minutos después de que ésta ha estado inactiva. Para crear una sesión:
+Para sincronizar las facturas del SAT primero tenemos que crear una sesión, la sesión estará ligada al usuario y tiene un proceso de expiración de 5 minutos después de que ésta ha estado inactiva. Para crear una sesión:
 
 ```python
 session = paybook.Session(user)
+print 'Session token: ' + session.token
 ```
 
 ####8. Podemos validar la sesión creada:
@@ -99,7 +100,7 @@ for site in sites:
 	print site.name.encode('utf-8')
 	if site.name == 'CIEC':
 	    sat_site = site
-print 'SAT site: ' + sat_site.id_site + ' ' + sat_site.id_site
+print 'SAT site: ' + sat_site.name + ' ' + sat_site.id_site
 ```
 
 ####10. Configuramos nuestras credenciales del SAT:
@@ -107,8 +108,8 @@ Una vez que hemos obtenido el sitio del SAT del catálogo de institiciones, conf
 
 ```python
 credentials_data = {
-	'rfc' : 'RFC',
-	'password' : 'CIEC'
+	'rfc' : 'SOME_RFC',
+	'password' : 'SOME_CIEC'
 }
 sat_credentials = paybook.Credentials(session=session,id_site=sat_site.id_site,credentials=credentials_data)
 print sat_credentials.username
@@ -119,7 +120,7 @@ Cada vez que registamos unas credenciales Paybook inicia un Job (proceso) que se
 
 ![Job Estatus](https://github.com/Paybook/sync-py/blob/master/normal.png "Job Estatus")
 
-Una vez registradas las credenciales se obtiene el primer estado (Código 100), posteriormente una vez que el Job ha empezado se obtiene el segundo estado (Código 101). Después de aquí, en caso de que las credenciales sean válidas, prosiguen los estados 202, 201 o 200. Estos indican que la sincronización está en proceso (código 201), que no se encontraron transacciones (código 202), o bien, la sincronización ha terminado (código 200). La librería proporciona un método para consultar el estado actual del Job. Este método se puede ejecutar constantemente hasta que se obtenga el estado requerido por el usuario, para este ejemplo especifico consultamos el estatus hasta que se obtenga un código 200, es decir, que la sincronización haya terminado:
+Una vez registradas las credenciales se obtiene el primer estado (Código 100), posteriormente una vez que el Job ha empezado se obtiene el segundo estado (Código 101). Después de aquí, en caso de que las credenciales sean válidas, prosiguen los estados 202, 201 o 200. Estos indican que la sincronización está en proceso (código 201), que no se encontraron transacciones (código 202), o bien, la sincronización ha terminado (código 200). La librería proporciona un método para consultar el estado actual del Job. Este método se puede ejecutar constantemente hasta que se obtenga el estado requerido por el usuario, para este ejemplo especifico consultamos el estado hasta que se obtenga un código 200, es decir, que la sincronización haya terminado:
 
 ```python
 sat_sync_completed = False
@@ -141,7 +142,7 @@ print 'Facturas del SAT: ' + str(len(sat_transactions))
 ```
 
 ####13. Consultamos la información de archivos adjuntos:
-Podemos también consultar los archivos adjuntos a estas facturas, recordemos que por cada factura el SAT tiene una archivo XML y un archivo PDF por cada factura.
+Podemos también consultar los archivos adjuntos a estas facturas, recordemos que por cada factura el SAT tiene una archivo XML y un archivo PDF:
 ```python
 attachments = paybook.Attachment.get(session=session)
 print 'Archivos XML/PDF del SAT: ' + str(len(attachments))
@@ -167,15 +168,15 @@ if len(attachments) > 0:
 
 ### Siguientes Pasos
 
-- Revisar el tutorial de como sincronizar una institución bancaria con credenciales simples (usuario y contraseña) [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.md)
+- Revisar el tutorial de como sincronizar una institución bancaria con credenciales simples (usuario y contraseña) [aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.md)
 
-- Revisar el tutorial de como sincronizar una institución bancaria con token [clic aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
+- Revisar el tutorial de como sincronizar una institución bancaria con token [aquí](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 - Puedes consultar y analizar la documentación completa de la librería [aquí](https://github.com/Paybook/sync-py/blob/master/readme.md)
 
 - Puedes consultar y analizar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
 
-- Acceder a nuestro proyecto en Github y checar todos los recursos que Paybook tiene para ti [clic aquí](https://github.com/Paybook)
+- Acceder a nuestro proyecto en Github y checar todos los recursos que Paybook tiene para ti [aquí](https://github.com/Paybook)
 
 
 
