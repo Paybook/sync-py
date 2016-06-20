@@ -1,6 +1,8 @@
 
 
-# Paybook Python SDK
+# Paybook Python Library
+
+Esta es la librería de Paybook para Python. Mediante esta librería usted puede implementar el API REST de Paybook de manera rapida y sencilla a través de sus clases y métodos.
 
 ## Getting Started:
 
@@ -17,7 +19,6 @@ Antes de consultar la documentación puedes tomar alguno de nuestros tutoriales:
 - Puedes consultar la documentación del API REST [aquí](https://www.paybook.com/sync/docs#api-Overview)
 - Puedes consultar todos los recursos que tenemos para ti [aquí](https://github.com/Paybook)
 
-
 ## Documentación:
 
 Cada método está documentado tomando como base la siguiente estructura:
@@ -33,7 +34,7 @@ method_type returned_value_type x = class_or_instance.get(attr1=attr1_type,...,a
 5. attrX: es el nombre del atributo X
 6. attrX_type: es el tipo de dato del atributo X
 
-**Importante:** recuerda siempre usar [argumentos key-word](http://stackoverflow.com/questions/1419046/python-normal-arguments-vs-keyword-arguments) al ejecutar los métodos del API.
+**Importante:** recuerda siempre usar [argumentos key-word](http://stackoverflow.com/questions/1419046/python-normal-arguments-vs-keyword-arguments) al ejecutar los métodos del API e.g En vez de ```paybook.User("some_user")``` usar ```paybook.User(user="some_user")```.
 
 ### Accounts
 
