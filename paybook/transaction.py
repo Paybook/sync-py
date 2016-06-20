@@ -55,7 +55,23 @@ class Transaction(main.Paybook):
 		count_json = Transaction.__call__(endpoint='transactions/count',method='get',params=params)
 		transactions_count = count_json['count']
 		return transactions_count
-		
+	
+	def get_json(self):
+		return {
+			'id_transaction' : self.id_transaction,
+			'id_user' : self.id_user,
+			'id_external' : self.id_external,
+			'id_site' : self.id_site,
+			'id_site_organization' : self.id_site_organization,
+			'id_site_organization_type' : self.id_site_organization_type,
+			'id_account' : self.id_account,
+			'id_account_type' : self.id_account_type,
+			'is_disable' : self.is_disable,
+			'description' : self.description,
+			'amount' : self.amount,
+			'dt_transaction' : self.dt_transaction,
+			'dt_refresh' : self.dt_refresh,
+		}#End of return
 
 
 

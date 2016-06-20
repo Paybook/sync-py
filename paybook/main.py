@@ -54,7 +54,6 @@ class Paybook():
 
 	@staticmethod
 	def log(message):
-		# print message
 		if Paybook.logger is not None:
 			Paybook.logger.debug(message)
 

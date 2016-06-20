@@ -36,3 +36,20 @@ class Account(main.Paybook):
 			account = Account(account_json)
 			accounts.append(account)
 		return accounts
+
+	def get_json(self):
+		return {
+			'id_account' : self.id_account,
+			'id_user' : self.id_user,
+			'id_external' : self.id_external,
+			'id_credential' : self.id_credential,
+			'id_site' : self.id_site,
+			'id_site_organization' : self.id_site_organization,
+			'name' : self.name,
+			'number' : self.number,
+			'balance' : self.balance,
+			'site' : self.site,
+			'dt_refresh' : self.dt_refresh
+		}#End of return
+
+

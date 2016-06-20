@@ -6,8 +6,10 @@ class Session(main.Paybook):
 
 	def __init__(self,user=None,token=None):
 		self.user = user
-		if token:
+		if token is not None:
 			self.token = token
+			self.iv = None
+			self.key = None
 		else:
 			Session.log('\n')
 			Session.log('Session.__init__')
@@ -16,7 +18,9 @@ class Session(main.Paybook):
 				'id_user' : self.user.id_user
 			}#End of data
 			session_json = Session.__call__(endpoint='sessions',method='post',data=data)
-			self.token = session_json['token']
+			self.token = session_json['token'] if 'token' in session_json else None
+			self.iv = session_json['iv'] if 'iv' in session_json else None
+			self.key = session_json['key'] if 'key' in session_json else None
 
 	def verify(self):
 		Session.log('\n')
@@ -34,4 +38,10 @@ class Session(main.Paybook):
 	def set_token(self,token):
 		self.token = token
 
-	
+	def get_json(self):
+		return {
+			'iv' : self.iv,
+			'key' : self.key,
+			'token' : self.token
+		}#End of return
+

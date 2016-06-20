@@ -2,6 +2,7 @@
 YOUR_API_KEY = 'YOUR_API_KEY'
 BANK_USERNAME = 'YOUR_BANK_USERNAME'
 BANK_PASSWORD = 'YOUR_BANK_PASSWORD'
+
 import time
 import sys
 import paybook.sdk as paybook_sdk
@@ -15,15 +16,14 @@ try:
 	bank_site = None
 	sites = paybook_sdk.Catalogues.get_sites(session=session)
 	for site in sites:
-	    print site.name
-	    if site.name == 'Banorte en su empresa':
+	    print 'Bank site: ' + site.name + ' ' + site.id_site
+	    if site.name == 'BancaNet Personal':
 	    	bank_site = site
-	print 'Bank site: ' + bank_site.name + ' ' + bank_site.id_site
 	CREDENTIALS = {
 	    'username' : BANK_USERNAME,
 	    'password' : BANK_PASSWORD
 	}#End of CREDENTIALS
-	bank_credentials = paybook_sdk.Credentials(session=session,id_site=bank_site.id_site,credentials=CREDENTIALS)
+	bank_credentials = paybook_sdk.Credentials(session=session,id_site='572930c4784806060f8b456b',credentials=CREDENTIALS)
 	print 'Esperando validacion de credenciales ... '
 	status_102_or_401 = None
 	while status_102_or_401 is None:
@@ -49,7 +49,9 @@ try:
 	        code = status['code']
 	        if code == 200:
 	            status_200 = status
+	print 'Getting transactions ... '
 	transactions = paybook_sdk.Transaction.get(session=session)
+	print 'Transactions: ' + str(len(transactions))
 	i = 0
 	for transaction in transactions:
 	    i+=1

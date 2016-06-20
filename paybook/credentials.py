@@ -114,6 +114,18 @@ class Credentials(main.Paybook):
 			Credentials.__call__(method='post',data=dumps(data),url=self.twofa)
 			return True
 
+	def get_json(self):
+		return {
+			'id_site' : self.id_site,
+			'id_site_organization' : self.id_site_organization,
+			'id_site_organization_type' : self.id_site_organization_type,
+			'id_credential' : self.id_credential,
+			'status' : self.status,
+			'twofa' : self.twofa,
+			'ws' : self.ws,
+			'username' : self.username
+		}#End of return
+
 	# @staticmethod# Pending because it is not implemented in REST API yet
 	# def status(session=None,id_user=None,id_credential=None):
 	# 	Credentials.log('\n')

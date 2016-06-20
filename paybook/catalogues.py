@@ -87,7 +87,7 @@ class Catalogues(main.Paybook):
 		return sites
  
 	@staticmethod
-	def get_site_organizations(session=None,id_user=None,options=None):
+	def get_site_organizations(session=None,id_user=None,options=None,is_test=False):
 		Catalogues.log('\n')
 		Catalogues.log('Catalogues.get_site_organizations')
 		if id_user is not None:
@@ -99,6 +99,8 @@ class Catalogues(main.Paybook):
 			params = {
 				'token' : session.token
 			}#End of params
+		if is_test is True:
+			params['is_test'] = is_test
 		site_organization_jsons = Catalogues.__call__(endpoint='catalogues/site_organizations',method='get',params=params)
 		site_organizations = []
 		for site_organization_json in site_organization_jsons:
@@ -137,6 +139,10 @@ class Site():
 			credentials_structure = Credentials_structure(credential_structure_json)
 			credentials_structures.append(credentials_structure)
 		self.credentials = credentials_structures
+		self.site_json = site_json
+
+	def get_json(self):
+		return self.site_json
 
 class Credentials_structure():
 
@@ -158,6 +164,10 @@ class Site_organization():
 		self.avatar = site_organization_json['avatar']
 		self.small_cover = site_organization_json['small_cover']
 		self.cover = site_organization_json['cover']
+		self.site_organization_json = site_organization_json
+
+	def get_json(self):
+		return self.site_organization_json
 
 
 

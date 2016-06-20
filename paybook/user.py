@@ -60,4 +60,3 @@ class User(main.Paybook):
 			'dt_create' : self.dt_create,
 			'dt_modify' : self.dt_modify
 		}#End of return
-
