@@ -4,7 +4,23 @@
 
 Esta es la librería de Paybook para Python. Mediante esta librería usted puede implementar el API REST de Paybook de manera rapida y sencilla a través de sus clases y métodos.
 
-## Getting Started:
+### Requerimientos
+
+1. [Python 2.7.6](https://www.python.org/downloads/)
+2. [Python Install Package pip](https://pip.pypa.io/en/stable/installing/)
+3. Libería requests de python (pip install requests)
+
+### Instalación
+
+Por medio del gestor de paquetes ejecutar:
+
+```
+$ pip install paybook
+```
+
+**Importante: ** Es posible que la ejecución del comando anterior requiera permisos de super usuario (sudo) esto depende de como tengas configurado Python en tu equipo.
+
+## Quickstart:
 
 Antes de consultar la documentación puedes tomar alguno de nuestros tutoriales:
 
