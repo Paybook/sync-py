@@ -17,7 +17,7 @@ try:
 
 	step = 0
 
-	print '\n ******* PAYBOOK PYTHON SDK TEST CHECKLIST ***** \n'
+	print '\n ******* PAYBOOK PYTHON LIBRARY UNIT TESTING SCRIPT ***** \n'
 
 	step += 1
 
@@ -281,4 +281,3 @@ except paybook_sdk.Error as error:
 	print INDENT + 'error: ' + str(error.code) + ' ' + error.message
 	print'\nChecklist uncompleted :('
 	print'\n'
-
