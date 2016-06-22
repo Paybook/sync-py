@@ -78,7 +78,7 @@ This match should be applied for all the endpoints of Sync's API so we have this
 * Attachment class matchs with sync.paybook.com/v1/attachments endpoint
 * Catalogues class matchs with sync.paybook.com/v1/catalogues endpoint
 
-You can see the complete UML for the library [here](https://drive.google.com/file/d/0ByfSP0j-5EqmOU9Pc1FZLWpLajg/view?usp=sharing)
+You can see and download the complete UML for the library [here](https://drive.google.com/file/d/0ByfSP0j-5EqmOU9Pc1FZLWpLajg/view?usp=sharing)
 
 You should code the library according to this UML, in it they are specified:
 
@@ -185,8 +185,8 @@ But you have to build the 3 basic quickstarts. A quickstart is a brief tutorial 
 But don't worry about drafting you can have the documentation quickstart templates:
 
 1. [quickstart_sat.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
-2. [quickstart_normal_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
-3. [quickstart_token_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
+2. [quickstart_normal_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.md)
+3. [quickstart_token_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.md)
 
 These files are in the project [sync-py](https://github.com/Paybook/sync-py) so you can copy the content and paste it in your own quickstarts files, so in your project on git there must be a quickstart_sat.md, quickstart_normal_bank.md and and quickstart_token_bank.md. All this projects must have the same content (drafting) you just must customize the parts were there are code samples, for example if you're documenting the Java library you should change this (in Python):
 
