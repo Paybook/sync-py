@@ -70,32 +70,32 @@ You should have an User instance with its dt_create, dt_modify, id_extarnal, id_
 
 This match should be applied for all the endpoints of Sync's API so we have this match:
 
-	User class matchs with sync.paybook.com/v1/users endpoint
-	Session class matchs with sync.paybook.com/v1/sessions endpoint
-	Transaction class matchs with sync.paybook.com/v1/transactions endpoint
-	Credentials class matchs with sync.paybook.com/v1/credentials endpoint
-	Account class matchs with sync.paybook.com/v1/accounts endpoint
-	Attachment class matchs with sync.paybook.com/v1/attachments endpoint
-	Catalogues class matchs with sync.paybook.com/v1/catalogues endpoint
+* User class matchs with sync.paybook.com/v1/users endpoint
+* Session class matchs with sync.paybook.com/v1/sessions endpoint
+* Transaction class matchs with sync.paybook.com/v1/transactions endpoint
+* Credentials class matchs with sync.paybook.com/v1/credentials endpoint
+* Account class matchs with sync.paybook.com/v1/accounts endpoint
+* Attachment class matchs with sync.paybook.com/v1/attachments endpoint
+* Catalogues class matchs with sync.paybook.com/v1/catalogues endpoint
 
-You can see the complete UML for the library [here](https://drive.google.com/file/d/0ByfSP0j-5EqmRHNtbm9YWWotb2c/view?usp=sharing)
+You can see the complete UML for the library [here](https://drive.google.com/file/d/0ByfSP0j-5EqmOU9Pc1FZLWpLajg/view?usp=sharing)
 
 You should code the library according to this UML, in it they are specified:
 
-	- Classes
-	- Class attributes, specifiyng its type
-	- Class methods, specifiyng whether they are instace or static methods and 	the value returned. 
-	- Inheritances and relations between classes
+* Classes
+* Class attributes, specifiyng its type
+* Class methods, specifiyng whether they are instace or static methods and 	the value returned. 
+* Inheritances and relations between classes
 
 
 And you should consider this:
 
-	- Almost all the classes inherit from Paybook class so they can access to its attributes and methods
-	- You will see a Paybook.__call__ method, this method should be used for the Sync API connection in order to centralize the call to the API in just one method.
-	- You will see a Paybook.API_KEY attribute, this attribute should be used every time another method requires the API_KEY
-	- You will see an Error class that inhertis from Exception, here you should implement this class and inherit from the Exception class used in the library's technology/programming language.
-	- All the errors returned by Sync API (e.g 401, 402, 500, etc) should be raised using the Error class (which is an exception class)
-	- You can see that some methods recieve as params something like this: Session s or String id_user, this means this method could be executed using a session object, or using an id_user. In the last case the method must use the api_key attribute of Paybook Class and instead of performing a token authentication it should perform an id_user plus api_key authentication. The difference between them is that when you are using a Session (token authentication) you just can perform CRUD operations on the session's user owner and in the second case (id_user plus api key authentication) you can perform CRUD operations on any user because you can specify it by the id_user param, but the logic of both should be the same the only difference is the authentication process.
+* Almost all the classes inherit from Paybook class so they can access to its attributes and methods
+* You will see a Paybook.__call__ method, this method should be used for the Sync API connection in order to centralize the call to the API in just one method.
+* You will see a Paybook.API_KEY attribute, this attribute should be used every time another method requires the API_KEY
+* You will see an Error class that inhertis from Exception, here you should implement this class and inherit from the Exception class used in the library's technology/programming language.
+* All the errors returned by Sync API (e.g 401, 402, 500, etc) should be raised using the Error class (which is an exception class)
+* You can see that some methods recieve as params something like this: Session s or String id_user, this means this method could be executed using a session object, or using an id_user. In the last case the method must use the api_key attribute of Paybook Class and instead of performing a token authentication it should perform an id_user plus api_key authentication. The difference between them is that when you are using a Session (token authentication) you just can perform CRUD operations on the session's user owner and in the second case (id_user plus api key authentication) you can perform CRUD operations on any user because you can specify it by the id_user param, but the logic of both should be the same the only difference is the authentication process.
 
 ### 2. Unit Testing
 
@@ -162,7 +162,7 @@ Once you have coded your library and maybe perform some testing you should perfo
 		37. Get attachments count
 		38. Get attachments
 
-Your library should perform all this unit test with success execution or throw an error when you were expecting an error. You can build a script to perform this unit test. If you have any doubt you can see the Python Library [unit test script](https://github.com/Paybook/sync-py/blob/master/checklist.py).
+Your library should perform all this unit test with success execution or throw an error when you were expecting an error. You can build a script to perform this unit test. If you have any doubt you can see the Python Library [unit test script](https://github.com/Paybook/sync-py/blob/master/unit_test.py).
 
 ### 3. Package Manager
 
@@ -178,15 +178,15 @@ Don't care about your library general documentation. As all the libraries were b
 
 But you have to build the 3 basic quickstarts. A quickstart is a brief tutorial based on an exisitng script that performs a specific task. In this case we have 3 main quickstarts whose objective is to show how to connect to the Sync's API using you're library to do this:
 
-	1. Syncrhonize the tax bill institution (SAT)
-	2. Syncrhonize a simple bank institution (a bank whose authentication only requires user and password)
-	3. Syncrhonize a complex bank institution (a bank whose authentication requires user, password and token)
+1. Syncrhonize the tax bill institution (SAT)
+2. Syncrhonize a simple bank institution (a bank whose authentication only requires user and password)
+3. Syncrhonize a complex bank institution (a bank whose authentication requires user, password and token)
 
 But don't worry about drafting you can have the documentation quickstart templates:
 
-	1. quickstart_sat.md
-	2. quickstart_normal_bank.md
-	3. quickstart_token_bank.md
+1. [quickstart_sat.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
+2. [quickstart_normal_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
+3. [quickstart_token_bank.md](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.md)
 
 These files are in the project [sync-py](https://github.com/Paybook/sync-py) so you can copy the content and paste it in your own quickstarts files, so in your project on git there must be a quickstart_sat.md, quickstart_normal_bank.md and and quickstart_token_bank.md. All this projects must have the same content (drafting) you just must customize the parts were there are code samples, for example if you're documenting the Java library you should change this (in Python):
 
@@ -210,11 +210,11 @@ for(i=0; i<my_users.lenght; i++){
 
 And you should do this for all the code samples, once you do this you will have your quickstarts ready. Apart from this you should have your quickstart scripts, for example, if your library is in Python:
 
-	1. quickstart_sat.py
-	2. quickstart_normal_bank.py
-	3. quickstart_token_bank.py
+1. [quickstart_sat.py](https://github.com/Paybook/sync-py/blob/master/quickstart_sat.py)
+2. [quickstart_normal_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_normal_bank.py)
+3. [quickstart_token_bank.py](https://github.com/Paybook/sync-py/blob/master/quickstart_token_bank.py)
 
-These scripts are the ones that support your quickstarts, the code you put on your quickstarts as code samples there must be in these scripts. So a developer can download these scripts and run them instead of write all the code. The quickstarts will tell them how this code works and how the connection to Paybook Sync's API should be implemented using the library.
+These scripts are the ones that support your quickstarts, the code you put on your quickstarts as code samples there must be in these scripts. So a developer can download these scripts and run them instead of write all the code. The quickstarts will tell them how this code works and how the connection to Paybook Sync's API should be implemented using the library. For example if your library is in javascript you should have a quickstart_sat.js, quickstart_normal_bank.js and quickstart_token_bank.js.
 
 ### You have finished!
 
