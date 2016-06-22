@@ -160,7 +160,7 @@ Descripción de los métodos de la clase:
 
 Estructura de los atributos de la clase:
 
-| Sessions         |                                  
+| Users         |                                  
 | -------------- | 
 | + str name <br> + str id_user <br> + str id_external <br> + str dt_create <br> + str dt_modify   |
 
