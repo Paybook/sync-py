@@ -18,18 +18,28 @@ class Account(main.Paybook):
 		self.dt_refresh = account_json['dt_refresh']
 
 	@staticmethod
-	def get(session=None,id_user=None,options=None):
+	def get(session=None,id_user=None,options={}):
+		if options is True:
+			return {
+				'id_account' : 'str',
+				'id_credential' : 'str',
+				'id_site' : 'str',
+				'id_site_organization' : 'str',
+				'id_site_organization_type' : 'str',
+				'id_site_organization' : 'str',
+				'fields' : 'str',
+				'limit' : 'int',
+				'skip' : 'int',
+				'order' : 'order'
+			}#End of return
 		Account.log('\n')
 		Account.log('Account.get')
+		params = options
 		if id_user is not None:
-			params = {
-				'api_key' : Credentials.api_key,
-				'id_user' : id_user
-			}#End of params
+			params['api_key'] = Credentials.api_key
+			params['id_user'] = id_user
 		else:
-			params = {
-				'token' : session.token
-			}#End of params
+			params['token'] = session.token
 		account_jsons = Account.__call__(endpoint='accounts',method='get',params=params)
 		accounts = []
 		for account_json in account_jsons:
@@ -50,6 +60,6 @@ class Account(main.Paybook):
 			'balance' : self.balance,
 			'site' : self.site,
 			'dt_refresh' : self.dt_refresh
-		}#End of return
+		}#End of return		
 
 

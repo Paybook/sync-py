@@ -20,18 +20,33 @@ class Transaction(main.Paybook):
 		self.dt_refresh = transaction_json['dt_refresh']
 
 	@staticmethod
-	def get(session=None,id_user=None,options=None):
+	def get(session=None,id_user=None,options={}):
+		if options is True:
+			return {
+				'id_transaction' : 'str',
+				'id_account' : 'str',
+				'id_credential' : 'str',
+				'id_site' : 'str',
+				'id_site_organization' : 'str',
+				'id_site_organization_type' : 'str',
+				'is_disable' : 'int',
+				'dt_refresh_from' : 'str',
+				'dt_refresh_to' : 'str',
+				'dt_transaction_from' : 'str',
+				'dt_transaction_to' : 'str',
+				'fields' : 'str',
+				'limit' : 'int',
+				'skip' : 'int',
+				'order' : 'int'
+			}#End of return
 		Transaction.log('\n')
 		Transaction.log('Transaction.get')
+		params = options
 		if id_user is not None:
-			params = {
-				'api_key' : Credentials.api_key,
-				'id_user' : id_user
-			}#End of params
+			params['api_key'] = Transaction.api_key
+			params['id_user'] = id_user
 		else:
-			params = {
-				'token' : session.token
-			}#End of params
+			params['token'] = session.token
 		transaction_jsons = Transaction.__call__(endpoint='transactions',method='get',params=params)
 		transactions = []
 		for transaction_json in transaction_jsons:
