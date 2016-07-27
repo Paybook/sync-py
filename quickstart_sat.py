@@ -15,7 +15,7 @@ try:
 	session_verified = session.verify()
 	print 'Session verified: ' + str(session_verified)
 	sat_site = None
-	sites = paybook.Catalogues.get_sites(session=session,is_test=True)
+	sites = paybook.Catalogues.get_sites(session=session)
 	for site in sites:
 	    print site.name.encode('utf-8')
 	    if site.name == 'CIEC':
