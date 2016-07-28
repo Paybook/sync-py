@@ -3,6 +3,7 @@ YOUR_API_KEY = 'YOUR_API_KEY'
 RFC = 'YOUR_RFC'
 CIEC = 'YOUR_CIEC'
 import time
+import sys
 import paybook.sdk as paybook
 try:
 	paybook.Paybook(YOUR_API_KEY)
@@ -34,8 +35,12 @@ try:
 		sat_status = sat_credentials.get_status(session=session)
 		for status in sat_status:
 			code = status['code']
-			if code == 200:
+			if code >= 200 and code <= 205:
 				sat_sync_completed = True
+			if code >= 400 and code <= 405:
+				print 'There was an error with your credentials with code: ' + str(code) + '.'
+				print 'Please check your credentials and run this script again\n\n'.
+				sys.exit()
 	sat_transactions = paybook.Transaction.get(session=session)
 	print 'Facturas del SAT: ' + str(len(sat_transactions))
 	attachments = paybook.Attachment.get(session=session)
