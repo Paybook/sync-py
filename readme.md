@@ -1,6 +1,6 @@
 
 
-# Paybook Python Library V1.9
+# Paybook Python Library V2.0
 
 Esta es la librería de Paybook para Python. Mediante esta librería usted puede implementar el API REST de Paybook de manera rapida y sencilla a través de sus clases y métodos.
 
