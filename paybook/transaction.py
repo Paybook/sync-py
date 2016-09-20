@@ -7,7 +7,6 @@ class Transaction(main.Paybook):
 	def __init__(self,transaction_json):
 		self.id_transaction = transaction_json['id_transaction']
 		self.id_user = transaction_json['id_user']
-		self.id_external = transaction_json['id_external']
 		self.id_site = transaction_json['id_site']
 		self.id_site_organization = transaction_json['id_site_organization']
 		self.id_site_organization_type = transaction_json['id_site_organization_type']
@@ -75,7 +74,6 @@ class Transaction(main.Paybook):
 		return {
 			'id_transaction' : self.id_transaction,
 			'id_user' : self.id_user,
-			'id_external' : self.id_external,
 			'id_site' : self.id_site,
 			'id_site_organization' : self.id_site_organization,
 			'id_site_organization_type' : self.id_site_organization_type,
