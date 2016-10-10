@@ -79,18 +79,25 @@ class Transaction(main.Paybook):
 	def get_json(self):
 		return {
 			'id_transaction' : self.id_transaction,
+			'id_source' : self.id_source,
 			'id_user' : self.id_user,
 			'id_site' : self.id_site,
 			'id_site_organization' : self.id_site_organization,
 			'id_site_organization_type' : self.id_site_organization_type,
 			'id_account' : self.id_account,
 			'id_account_type' : self.id_account_type,
+			'id_currency' : self.id_currency,
 			'is_disable' : self.is_disable,
 			'description' : self.description,
 			'amount' : self.amount,
+			'currency' : self.currency,
+			'attachments' : self.attachments,
+			'extra' : self.extra,
+			'reference' : self.reference,
 			'dt_transaction' : self.dt_transaction,
 			'dt_refresh' : self.dt_refresh,
 		}#End of return
+
 
 
 
