@@ -262,7 +262,7 @@ try:
 	step += 1
 
 	if attachments_count > 0:
-		id_attachment = attachments[0]['url']
+		id_attachment = attachments[0].url
 		print id_attachment
 		
 		# print str(step) + '. Consultar el contenido de un attachment especifico'

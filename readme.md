@@ -1,6 +1,6 @@
 
 
-# Paybook Python Library V2.0
+# Paybook Python Library V2.1
 
 Esta es la librería de Paybook para Python. Mediante esta librería usted puede implementar el API REST de Paybook de manera rapida y sencilla a través de sus clases y métodos.
 
@@ -146,8 +146,8 @@ Estructura de los atributos de la clase:
 
 | Transactions         |                                  
 | -------------- | 
-| + str id_transaction <br> + str id_user <br> + str id_external <br> + str id_site <br> + str id_site_organization <br> + str id_site_organization_type <br> + str id_account <br> + str id_account_type <br> + str is_disable <br> + str description <br> + float amount <br> + str dt_transaction <br> + str dt_refresh   |
-				
+| + str id_transaction <br> + str id_source <br> + str id_user <br> + str id_external <br> + str id_site <br> + str id_site_organization <br> + str id_site_organization_type <br> + str id_account <br> + str id_account_type <br> + str id_currency <br> + int is_disable <br> + str description <br> + float amount <br> + str currency <br> + list attachments <br> + dict extra <br>  + str reference <br> + str dt_transaction <br> + str dt_refresh   |
+
 Descripción de los métodos de la clase:
 
 

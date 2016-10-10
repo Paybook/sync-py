@@ -6,15 +6,21 @@ class Transaction(main.Paybook):
 
 	def __init__(self,transaction_json):
 		self.id_transaction = transaction_json['id_transaction']
+		self.id_source = transaction_json['id_source']
 		self.id_user = transaction_json['id_user']
 		self.id_site = transaction_json['id_site']
 		self.id_site_organization = transaction_json['id_site_organization']
 		self.id_site_organization_type = transaction_json['id_site_organization_type']
 		self.id_account = transaction_json['id_account']
 		self.id_account_type = transaction_json['id_account_type']
+		self.id_currency = transaction_json['id_currency']
 		self.is_disable = transaction_json['is_disable']
 		self.description = transaction_json['description']
 		self.amount = transaction_json['amount']
+		self.currency = transaction_json['currency']
+		self.attachments = transaction_json['attachments']
+		self.extra = transaction_json['extra']
+		self.reference = transaction_json['reference']
 		self.dt_transaction = transaction_json['dt_transaction']
 		self.dt_refresh = transaction_json['dt_refresh']
 
