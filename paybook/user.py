@@ -15,7 +15,7 @@ class User(main.Paybook):
 					'name' : name
 				}#End of data
 				if id_external is not None:
-                    data['id_external'] = id_external
+					data['id_external'] = id_external
 				user_json = User.__call__(endpoint='users',method='post',data=data)
 			elif id_user is not None:# Existing user
 				User.log('Retrieveing existing user ... ')
