@@ -4,7 +4,7 @@ import main
 
 class User(main.Paybook):
 
-	def __init__(self,name=None,id_user=None,user_json=None):# If it already exists it retrieves the existing one
+	def __init__(self,name=None,id_user=None,id_external=None,user_json=None):# If it already exists it retrieves the existing one
 		User.log('\n')
 		User.log('User.__init__')
 		if user_json is None:
@@ -14,6 +14,8 @@ class User(main.Paybook):
 					'api_key' : User.api_key, 
 					'name' : name
 				}#End of data
+				if id_external is not None:
+                    data['id_external'] = id_external
 				user_json = User.__call__(endpoint='users',method='post',data=data)
 			elif id_user is not None:# Existing user
 				User.log('Retrieveing existing user ... ')
