@@ -94,4 +94,4 @@ ENV/
 
 setup.py
 requirements.txt
-
+.DS_Store
