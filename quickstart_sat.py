@@ -39,7 +39,7 @@ try:
 				sat_sync_completed = True
 			if code >= 400 and code <= 405:
 				print 'There was an error with your credentials with code: ' + str(code) + '.'
-				print 'Please check your credentials and run this script again\n\n'.
+				print 'Please check your credentials and run this script again. \n\n'
 				sys.exit()
 	sat_transactions = paybook.Transaction.get(session=session)
 	print 'Facturas del SAT: ' + str(len(sat_transactions))
