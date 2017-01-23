@@ -16,6 +16,7 @@ class Account(main.Paybook):
 		self.balance = account_json['balance']
 		self.site = account_json['site']
 		self.dt_refresh = account_json['dt_refresh']
+		self.extra = account_json['extra'] if 'extra' in account_json else {}
 
 	@staticmethod
 	def get(session=None,id_user=None,options={}):
@@ -49,6 +50,7 @@ class Account(main.Paybook):
 
 	def get_json(self):
 		return {
+			'extra' : self.extra,
 			'id_account' : self.id_account,
 			'id_user' : self.id_user,
 			'id_external' : self.id_external,
