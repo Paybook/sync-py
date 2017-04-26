@@ -11,6 +11,7 @@ class Account(main.Paybook):
 		self.id_credential = account_json['id_credential']
 		self.id_site = account_json['id_site']
 		self.id_site_organization = account_json['id_site_organization']
+		self.id_site_organization_type = account_json['id_site_organization_type']
 		self.name = account_json['name']
 		self.number = account_json['number']
 		self.balance = account_json['balance']
@@ -57,6 +58,7 @@ class Account(main.Paybook):
 			'id_credential' : self.id_credential,
 			'id_site' : self.id_site,
 			'id_site_organization' : self.id_site_organization,
+			'id_site_organization_type' : self.id_site_organization_type,
 			'name' : self.name,
 			'number' : self.number,
 			'balance' : self.balance,
