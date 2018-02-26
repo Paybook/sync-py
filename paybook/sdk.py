@@ -1,13 +1,13 @@
 # -​*- coding: utf-8 -*​-
 
-from trespaybook import main
-from trespaybook import user
-from trespaybook import session
-from trespaybook import account
-from trespaybook import attachment
-from trespaybook import catalogues
-from trespaybook import credentials
-from trespaybook import transaction
+from payboook import main
+from payboook import user
+from payboook import session
+from payboook import account
+from payboook import attachment
+from payboook import catalogues
+from payboook import credentials
+from payboook import transaction
 
 
 # Core classes:

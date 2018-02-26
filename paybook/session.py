@@ -1,6 +1,6 @@
 # -​*- coding: utf-8 -*​-
 
-from trespaybook import main
+from payboook import main
 
 
 class Session(main.Paybook):

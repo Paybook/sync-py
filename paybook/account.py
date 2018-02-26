@@ -1,6 +1,6 @@
 # -​*- coding: utf-8 -*​-
 
-from trespaybook import main
+from payboook import main
 
 
 class Account(main.Paybook):
