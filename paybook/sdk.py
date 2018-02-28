@@ -1,13 +1,13 @@
 # -​*- coding: utf-8 -*​-
 
-from payboook import main
-from payboook import user
-from payboook import session
-from payboook import account
-from payboook import attachment
-from payboook import catalogues
-from payboook import credentials
-from payboook import transaction
+from . import main
+from . import user
+from . import session
+from . import account
+from . import attachment
+from . import catalogues
+from . import credentials
+from . import transaction
 
 
 # Core classes:

@@ -1,6 +1,6 @@
 # -​*- coding: utf-8 -*​-
 
-from payboook import main
+from . import main
 
 
 class Account(main.Paybook):

@@ -1,7 +1,7 @@
 # -​*- coding: utf-8 -*​-
 
 from json import dumps
-from payboook import main
+from . import main
 
 
 class Credentials(main.Paybook):
