@@ -1,13 +1,14 @@
 # -​*- coding: utf-8 -*​-
 
-from paybook import main
-from paybook import user
-from paybook import session
-from paybook import account
-from paybook import attachment
-from paybook import catalogues
-from paybook import credentials
-from paybook import transaction
+from payboook import main
+from payboook import user
+from payboook import session
+from payboook import account
+from payboook import attachment
+from payboook import catalogues
+from payboook import credentials
+from payboook import transaction
+
 
 # Core classes:
 Error = main.Error
