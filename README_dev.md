@@ -32,7 +32,7 @@ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 ## TODO
 
-- [ ] Add version one version manager
+- [ ] Add version one version manager (https://packaging.python.org/guides/single-sourcing-package-version/#single-sourcing-the-version)
 - [ ] Add properly test
 
 
