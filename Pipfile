@@ -5,6 +5,8 @@ verify_ssl = true
 
 [dev-packages]
 sync-py = {editable = true,path = "."}
+pylint = "*"
+python-dotenv = "*"
 
 [packages]
 requests = "*"
