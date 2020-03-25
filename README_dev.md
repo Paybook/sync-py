@@ -9,7 +9,7 @@
 Run develoment local:
 ```bash
     cd sync-py
-    pipenv install -e .
+    pipenv install --dev -e .
     pipenv graph
 ```
 
