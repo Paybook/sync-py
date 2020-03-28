@@ -10,7 +10,22 @@ def testIP():
 class Sync():
     @staticmethod
     def auth(AUTH: dict, id_user: dict) -> dict:
-        testIP()
+        try:
+            session = Sync.run(AUTH, '/sessions', id_user, 'POST')
+            if 'token' in session:
+                response = {"token": session['token']}                
+                return response
+            else:
+                raise session
+                # raise new Error(
+                #     session.code,
+                #     session.response,
+                #     session.message,
+                #     session.satus
+                # )            
+        except Exception as e:
+            raise e
+         
     
     @staticmethod
     def strictAuth():
@@ -26,13 +41,12 @@ class Sync():
             headers = {
                 'Content-type': "application/json"
             }
-            # CHECK AUTH TYPE        
-            if 'api_key' in AUTH:
-                headers['Authorization'] = "API_KEY api_key="+AUTH['api_key']
-            elif 'token' in AUTH:
-                headers['Authorization'] = "TOKEN token="+AUTH['token']
-            else:
-                raise Exception('No valid AUTH provided')        
+            # CHECK AUTH TYPE 
+            if AUTH:       
+                if 'api_key' in AUTH:
+                    headers['Authorization'] = "API_KEY api_key="+AUTH['api_key']
+                elif 'token' in AUTH:
+                    headers['Authorization'] = "TOKEN token="+AUTH['token']        
             #  ASSIGN HTTP METHOD
             headers['X-Http-Method-Override'] = {
                 'GET': 'GET',
@@ -41,8 +55,8 @@ class Sync():
                 'DELETE': 'DELETE'
             }[method]
 
-            response = requests.post(uri, headers=headers, params=payload)
-            return response
+            response = requests.post(uri, headers=headers, params=payload) #json=payload if route=='/credentials' else None)
+            return response.json()['response']
         except KeyError as bad_method:
             print(f"INCORRECT METHOD ASKED: {bad_method}")            
             raise bad_method 
