@@ -10,7 +10,7 @@ load_dotenv()
 API_KEY = {
     'api_key': getenv('API_KEY')
 }
-WEBHOOK_ENDPOINT = ''
+WEBHOOK_ENDPOINT = getenv('webhook_url')
 tmp_id_user = None
 
 def prettyPrint(parsed):
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             'GET'
         )
         site = response[0]        
-        credentials = dict()
+        credentials = {}
         credentials[site['credentials'][0]['name']] = 'ACM010101ABC'
         credentials[site['credentials'][1]['name']] = 'test'
         payload['credentials'] = credentials
@@ -125,21 +125,21 @@ if __name__ == "__main__":
         logger(response, "Consultar credenciales")        
         
         # Consulta status credenciales
-        id_job = satCredential.id_job
+        id_job = satCredential['id_job']
         response = Sync.run(
             token,
-            "/jobs/id_job/status", 
+            f"/jobs/{id_job}/status", 
             None,
             'GET'
         )
         logger(response, "Consulta status credenciales")        
-        end()
+        
 
         # Consultar Cuentas
         response = Sync.run(
             token,
             "/accounts", 
-            {"id_credential": satCredential.id_credential},
+            {"id_credential": satCredential['id_credential']},
             'GET'
         )
         logger(response, "Consultar cuentas")        
@@ -149,7 +149,7 @@ if __name__ == "__main__":
             token,
             "/transactions", 
             {
-                "id_credential": satCredential.id_credential,
+                "id_credential": satCredential['id_credential'],
                 "limit": 1
             },
             'GET'
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         response = Sync.run(
             token,
             "/transactions/count", 
-            {"id_credential": satCredential.id_credential},
+            {"id_credential": satCredential['id_credential']},
             'GET'
         )
         logger(response, "Consultar el número de transacciones")        
@@ -171,7 +171,7 @@ if __name__ == "__main__":
             "/webhooks", 
             {
                 "url": WEBHOOK_ENDPOINT, 
-                "events": {"credential_create","credential_update","refresh"},
+                "events": ["credential_create","credential_update","refresh"],
             },
             'POST'
         )
@@ -186,12 +186,12 @@ if __name__ == "__main__":
             'GET'
         )
         logger(response, "Consultar Webhook")        
-        sleep(150)
+        sleep(50)
 
         # Eliminar Webhook
         response = Sync.run(
             API_KEY,
-            "/webhooks/id_webhook", 
+            f"/webhooks/{id_webhook}", 
             None,
             'DELETE'
         )
@@ -202,7 +202,7 @@ if __name__ == "__main__":
             token,
             "/attachments", 
             {
-                "id_credential": satCredential.id_credential,
+                "id_credential": satCredential['id_credential'],
                 "limit": 1
             },
             'GET'
@@ -211,19 +211,20 @@ if __name__ == "__main__":
 
         # Obtener archivo adjunto
         attachment = response[0]
-        attachmentUrl = attachment.url
+        attachmentUrl = attachment['url']
         response = Sync.run(
             token,
             attachmentUrl, 
             None,
             'GET'
         )
-        logger(response, "Obtener archivo adjunto")
+        logger({}, "Obtener archivo adjunto")
+        print(response)
 
         # Obtener info extra
         response = Sync.run(
             token,
-            attachment.url+"/extra", 
+            attachment['url']+"/extra", 
             None,
             'GET'
         )
@@ -252,27 +253,27 @@ if __name__ == "__main__":
         )
         logger(response, "Crear credenciales twofa")        
         twofaCredential = response
-        sleep(20)
+        sleep(10)
 
-        id_job = twofaCredential.id_job
+        id_job = twofaCredential['id_job']
         response = Sync.run(
             token,
-            "/jobs/id_job/status", 
+            f"/jobs/{id_job}/status", 
             None,
             'GET'
         )
         logger(response, "Consulta status credenciales twofa")        
         is_twofa = False
-        if(response[len(response).code] == 410):
+        if(response[len(response)-1]['code'] == 410):
             is_twofa = True
             logger(response, "Is two-fa!")
         
         # Manda TWOFA
         twofaToken = {"twofa" :  {} }
-        twofaToken["twofa"][response[2].twofa[0].name] = "123456"
+        twofaToken["twofa"][response[2]['twofa'][0]['name']] = "123456"
         twofa = Sync.run(
             token,
-            "/jobs/id_job/twofa", 
+            f"/jobs/{id_job}/twofa", 
             twofaToken, 
             'POST'
         )
@@ -280,7 +281,7 @@ if __name__ == "__main__":
 
         response = Sync.run(
             token,
-            "/jobs/id_job/status", 
+            f"/jobs/{id_job}/status", 
             None,
             'GET'
         )
@@ -289,10 +290,10 @@ if __name__ == "__main__":
         # ------------------------- Eliminate --------------------- #
 
         # Eliminar credencial
-        id_credential = satCredential.id_credential
+        id_credential = satCredential['id_credential']
         response = Sync.run(
             token,
-            "/credentials/id_credential", 
+            f"/credentials/{id_credential}", 
             None,
             'DELETE'
         )
@@ -301,7 +302,7 @@ if __name__ == "__main__":
         # Eliminar un usuario
         response = Sync.run(
             API_KEY,
-            "/users/id_user", 
+            f"/users/{id_user}", 
             {},
             'DELETE'
         )

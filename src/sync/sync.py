@@ -1,5 +1,6 @@
 # -​*- coding: utf-8 -*​-
 import requests
+from requests.exceptions import HTTPError
 
 SYNC_API_URL = 'https://sync.paybook.com/v1'
 
@@ -16,13 +17,12 @@ class Sync():
                 response = {"token": session['token']}                
                 return response
             else:
-                raise session
-                # raise new Error(
-                #     session.code,
-                #     session.response,
-                #     session.message,
-                #     session.satus
-                # )            
+                raise Error(
+                    session['code'],
+                    session['response'],
+                    session['message'],
+                    session['status']
+                )            
         except Exception as e:
             raise e
          
@@ -55,9 +55,41 @@ class Sync():
                 'DELETE': 'DELETE'
             }[method]
 
-            response = requests.post(uri, headers=headers, params=payload)
-            return response.json()['response']
+            # response = requests.post(uri, headers=headers, params=payload)
+            response = requests.post(uri, headers=headers, json=payload)
+            response.raise_for_status()
+            text_body = response.text
+            if not text_body.startswith('<?xml', 0, 6):
+                response_json = response.json()
+                sync_response = response_json['response']
+                is_array = isinstance(sync_response, list)
+                is_bool = isinstance(sync_response, bool)
+                response = sync_response if is_array or not is_bool else response_json
+                return response
+            else:
+                return text_body
         except KeyError as bad_method:
             print(f"INCORRECT METHOD ASKED: {bad_method}")            
             raise bad_method 
+        except HTTPError as http_err:            
+            raise Error(
+                response.status_code, 
+                response.json(),
+                response.json()['message'],
+                http_err
+            )
+class Error(Exception):
 
+    def __init__(self, code, response, message, status):
+        self.code = code
+        self.response = response
+        self.message = message
+        self.status = status
+
+    def get_json(self):
+        return {
+            'code': self.code,
+            'response': self.response,
+            'message': self.message,
+            'status': self.status
+} # End of return
