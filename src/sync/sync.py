@@ -55,7 +55,7 @@ class Sync():
                 'DELETE': 'DELETE'
             }[method]
 
-            response = requests.post(uri, headers=headers, params=payload) #json=payload if route=='/credentials' else None)
+            response = requests.post(uri, headers=headers, params=payload)
             return response.json()['response']
         except KeyError as bad_method:
             print(f"INCORRECT METHOD ASKED: {bad_method}")            

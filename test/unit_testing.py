@@ -113,7 +113,7 @@ if __name__ == "__main__":
         )
         logger(response, "Crear credenciales normal")        
         satCredential = response
-        sleep(30)
+        sleep(10)
 
         # Consultar credenciales
         response = Sync.run(
