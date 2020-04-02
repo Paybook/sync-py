@@ -6,29 +6,56 @@
 * [Pipenv](https://github.com/pypa/pipenv): 2018.11.26
 * [Twine](https://github.com/pypa/twine/) : 3.1.1
 
-Run develoment local:
+## Set up local development 
+Run development local:
 ```bash
     cd sync-py
     pipenv install --dev -e .
     pipenv graph
 ```
 
-Create **dist files**: 
+## Publish on test.pypi.org
+
+1.Create **dist files**: 
 ```bash
 pipenv run python setup.py sdist bdist_wheel
 ```
 
-Check **dist files**: 
+2.Check **dist files**: 
 ```bash
 twine check dist/*
 ```
 
-Publish on test.pypi.org: 
+3.Publish on test.pypi.org: 
 ```bash
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
 > Don't forget to increase the version
+
+## Test from test.pypi.org
+1. Pipfile
+```python
+[[source]]
+name = "test"
+url = "https://test.pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+python-dotenv = "*"
+
+[packages]
+sync-py = {index = "test",version = "*"}
+
+# .
+# .
+# .
+# Omitted
+```
+
+2. Install and update`pipenv install --dev` and `pipenv update`
+
+3. Run `pipevn run python path-to/test.py`
 
 ## TODO
 
