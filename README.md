@@ -4,7 +4,7 @@
 
 </center>
 
-# SYNC-PHP
+# SYNC-PY
 
 **Sync** recupera información de las cuentas y sus transacciones, de instituciones financieras autorizados por el usuario, y lo regresa a soluciones de terceros en un formato organizado, muy fácil de utilizar.
 
@@ -56,7 +56,7 @@
 
 1. Instalar mediante composer
 ```bash
-  composer require paybook/sync-php
+  pip3 install sync-py
 ```
 ## Requerimientos
 
