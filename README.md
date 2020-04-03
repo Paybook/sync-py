@@ -56,7 +56,7 @@
 
 1. Instalar mediante composer
 ```bash
-  pip3 install sync-py
+  pip install sync-py
 ```
 ## Requerimientos
 
@@ -116,33 +116,36 @@ Por último pero no menos importante, se encuentran las transacciones que depend
 
 ### La librería
 Incluye la librería y declara tu API Key.
-```php
-require __DIR__.'./vendor/autoload.php';
-define('API_KEY', '<TU_API_KEY>');
-use Paybook\Sync\Sync;
+```python
+from sync import Sync
+from dotenv import load_dotenv
+
+API_KEY = {
+    'api_key': getenv('API_KEY') # Tu API_KEY aquí
+}
 ```
-> **_¡Importante!:_** No escribas tu API KEY directamente en tu código o en texto plano, ya que es una mala práctica de seguridad.
+> **_¡Importante!:_** No escribas tu API KEY directamente en tu código o en texto plano, ya que es una mala práctica de seguridad. Te recomiendo que revises la libreria [Dotenv](https://pypi.org/project/python-dotenv/), es ideal para administrar la configuración de la aplicación durante el desarrollo y la producción utilizando principios de [12-factor](https://12factor.net/)
 
 La librería incluye los métodos:
 * `Sync.auth()`
-```php
-// Crear una sesión para un usuario
-$token = Sync::auth(
-    array("api_key" => API_KEY), // Tu API KEY
-    array("id_user"=>$id_user) // ID de usuario
-);
+```python
+# Crear una sesión para un usuario
+token = Sync.auth(
+  API_KEY, # Tu API KEY
+  {"id_user": id_user} # ID de ususario
+)
 ```
   >_**Nota**: Para realizar la autenticación es necesario tener creado un usuario, de donde se obtiene el **id_user**, vease este [ejemplo](#crear-un-usuario)._
 * `Sync.run()`
 
-```php
-// Consumir un recurso de Sync
-$response = Sync::run(
-    $token, // Autenticación
-    "/credentials", // Recurso
-    null, // Parametros
-    'GET' // Método HTTP
-);
+```python
+# Consumir un recurso de Sync
+response = Sync.run(
+  token, # Autenticación
+  "/credentials", # Recurso
+  None, # Parametros
+  'GET' # Método HTTP
+)
 ```
 
 Y hace uso los siguientes métodos de HTTP:
@@ -169,30 +172,16 @@ La ventaja principal es que te permite recibir las últimas actualizaciones de c
 Para fines prácticos de desarrollo usaremos el servicio de [ngrok][ngrok], el cual nos permite crear URLs públicas para exponer nuestro servidor local a través de internet.
 Puedes consultar cómo instalarlo en su [página de descargas](https://ngrok.com/download).
 
-Ahora crearemos un servidor sencillo con [PHP](https://www.php.net/) y [Slim](https://www.slimframework.com/). 
+Ahora crearemos un servidor sencillo con [python](https://www.python.net/) y [Slim](https://www.slimframework.com/). 
 
 > Cabe mencionar que se hace uso de estas tecnologías con fines ilustrativos y el desarrollador es libre de implementar las que crea más convenientes. 
 
-Creando un archivo al que llamaremos `server.php` e incluiremos el siguiente código:
-```php
-<?php
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
-
-require __DIR__ . '/vendor/autoload.php';
-
-$app = AppFactory::create();
-
-$app->get('/webhook', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello from my webhook!");
-    return $response;
-});
-
-$app->run();
+Creando un archivo al que llamaremos `server.py` e incluiremos el siguiente código:
+```python
+# Python code here
 ```
 
-Habiendo terminado lo anterior, instalamos slim con el comando `composer require slim/slim slim/psr7` y luego corremos nuestro servidor con el comando `php -S server.js`
+Habiendo terminado lo anterior, instalamos slim con el comando `composer require slim/slim slim/psr7` y luego corremos nuestro servidor con el comando `python -S server.js`
 
 > **Warning:** The built-in web server was designed to aid application development. It may also be useful for testing purposes or for application demonstrations that are run in controlled environments. It is not intended to be a full-featured web server. It should not be used on a public network.
 
@@ -235,16 +224,16 @@ Recurso | Auth |
  Attachments | Token
 
 ### Obtener un Token de sesión:
-```php
-$token = Sync::auth(
-  array("api_key" => API_KEY), // Tu API KEY
-  array("id_user"=>$id_user) // ID de usuario
-);
+```python
+token = Sync.auth(
+  API_KEY, # Tu API KEY
+  {"id_user": id_user} # ID de ususario
+)
 ```
 #### Respuesta:
-```php
-  print_r($token);
-  // #Imprime: { token: "d5b33dcf996ac34fd2fa56782d72bff6"}
+```python
+  print(token)
+  # Imprime: { token: "d5b33dcf996ac34fd2fa56782d72bff6"}
 ```
 >Puedes ver más acerca de cada uno en [recursos y ejemplos](#recursos-y-ejemplos).
 
@@ -289,13 +278,13 @@ Puedes consultar más información acerca de los parametros de cada recurso en l
     <td>GET</td>
 <td rowspan="4">
 
-```php
+```python
 { api_key: API_KEY }
 ```
 </td>
 <td>
 
-```php
+```python
 {
     "id_external", // Opcional
     "fields", // Opcional
@@ -311,7 +300,7 @@ Puedes consultar más información acerca de los parametros de cada recurso en l
     <td>POST</td>
   <td rowspan="2">
 
-```php
+```python
 {
   "id_external", // Opcional
   "name"
@@ -333,13 +322,13 @@ Puedes consultar más información acerca de los parametros de cada recurso en l
 </table>
 
 #### Consultar usuarios
-```php
-$response = Sync::run(
-    array("api_key" => SYNC_API_KEY),
-    '/users', 
-    array(), 
-    'GET'
-);
+```python
+response = Sync.run(
+  API_KEY, 
+  '/users', 
+  None, 
+  'GET'
+)
 ```
 Devuelve:
 ```json
@@ -362,13 +351,13 @@ Devuelve:
 ```
 
 #### Consultar un usuario en especifico
-```php
- $response = Sync::run(
-  array("api_key" => API_KEY),
-  '/users', 
-  array("id_user"=>'5df859c4a7a6442757726ef4'), 
-  'GET'
-);
+```python
+response = Sync.run(
+    API_KEY, 
+    '/users', 
+    {'id_external': 'KEMONITO09'}, 
+    'GET'
+)
 ```
 Devuelve:
 ```json
@@ -383,17 +372,17 @@ Devuelve:
 ]
 ```
 #### Crear un Usuario
-```php
-$response = Sync::run(
-  array("api_key" => API_KEY),
+```python
+response = Sync.run(
+  API_KEY, 
   '/users', 
-  array(
-      "id_external"=> 'MIST030794',
-      "name"=> 'Rey Misterio'
-  ), 
+  {
+      "id_external": 'MIST030794',
+      "name": 'Rey Misterio'
+  }, 
   'POST'
-);
-$id_user = $response->id_user;
+)
+id_user = response['id_user']
 ```
 Devuelve:
 ```json
@@ -407,15 +396,13 @@ Devuelve:
 ```
 #### Actualizar un Usuario
 
-```php
-$response = Sync::run(
-  array("api_key" => API_KEY),
-  "/users/$id_user", 
-  array(
-      "name"=> 'El Santo Jr.'
-  ), 
+```python
+response = Sync.run(
+  API_KEY,
+  f"/users/{id_user}", 
+  {"name":  'Rey Misterio Jr.'},
   'PUT'
-);
+)
 ```
 Devuelve:
 ```json
@@ -431,13 +418,13 @@ Devuelve:
 #### Eliminar un usuario
 >_**Nota:** Esto eliminará toda la información del usuario._
 
-```php
-$response = Sync::run(
-  array("api_key" => API_KEY),
-  "/users/$id_user", 
-  array(), 
+```python
+response = Sync.run(
+  API_KEY,
+  f"/users/{id_user}", 
+  {},
   'DELETE'
-);
+)
 ```
 Devuelve:
 ```json
@@ -471,13 +458,13 @@ Devuelve:
     <td rowspan="6">GET</td>
 <td rowspan="6">
 
-```php
+```python
 { token: TOKEN }
 ```
 </td>
 <td rowspan="3">
 
-```php
+```python
 {
     "fields", // opcional
     "limit", // opcional
@@ -500,7 +487,7 @@ Devuelve:
     <td>Consulta los sitios disponiles</td>
   <td rowspan="2">
 
-```php
+```python
 {
   "id_site", //opcional
   "id_site_organization", //opcional
@@ -522,7 +509,7 @@ Devuelve:
     <td>Consulta los sitios agrupados por organización del sitio</td>
   <td rowspan="1">
 
-```php
+```python
 {
   "id_site", //opcional
   "id_site_organization", //opcional
@@ -538,14 +525,13 @@ Devuelve:
 
 Paybook Sync proporciona un catálogo de las instituciones que podemos sincronizar para los usuarios.
 
-```php
-// Consultar catálogos
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/catalogues/sites", 
-  null,
+  None
   'GET'
-);
+)
 ```
 
 Devuelve:
@@ -669,14 +655,14 @@ Devuelve:
     <td>GET</td>
 <td rowspan="4">
 
-```php
+```python
 { token: TOKEN }
 ```
 
 </td>
 <td>
 
-```php
+```python
 {}
 ```
 </td>
@@ -686,7 +672,7 @@ Devuelve:
     <td>POST</td>
   <td rowspan="1">
 
-```php
+```python
 {
   "id_site",
   "credentials"
@@ -700,7 +686,7 @@ Devuelve:
     <td>DELETE</td>
 <td rowspan="2">
 
-```php
+```python
 {}
 ```
 </td>
@@ -721,18 +707,18 @@ Cada institución tiene sus propias credenciales, algunas instituciones requiere
 **_Normal_**: Credenciales que sólo requieren **_user_** y **_password_**.
 
 1. ##### Crear credenciales normal
-```php
-  // Consultar catálogos
-$payload = array("id_site"=>"5da784f1f9de2a06483abec1");
-$response = Sync::run(
-  $token,
+```python
+# Consultar catálogos
+payload = {'id_site': "5da784f1f9de2a06483abec1"}
+response = Sync.run(
+  token,
   "/catalogues/sites", 
-  $payload,
+  payload,
   'GET'
-);
-$site = $response[0];
-print_r($site)
-/* Algo como esto:
+)
+site = response[0]    
+print(site)
+""" Algo como esto:
 {
     "id_site": "56cf5728784806f72b8b4568",
     .
@@ -760,17 +746,18 @@ print_r($site)
     ],
     "endpoint": "/v1/credentials"
 }
-*/
-$credentials = array();
-$credentials[$site->credentials[0]->name] = 'ACM010101ABC';
-$credentials[$site->credentials[1]->name] = 'test';
-$payload['credentials'] = $credentials;
-$normalCredential = Sync::run(
-  $token,
+"""
+# Crear credenciales
+credentials = {}
+credentials[site['credentials'][0]['name']] = 'ACM010101ABC'
+credentials[site['credentials'][1]['name']] = 'test'
+payload['credentials'] = credentials
+response = Sync.run(
+  token,
   "/credentials", 
-  $payload,
+  payload,
   'POST'
-);
+)
 ```
 Devuelve:
 ```json
@@ -788,13 +775,14 @@ Devuelve:
 
 2. ##### Monitoreo del estado de la credencial
 
-```php
-$response = Sync::run(
-  $token,
+```python
+# Consultar credenciales
+response = Sync.run(
+  token,
   "/credentials", 
-  null,
+  None,
   'GET'
-);
+  )
 ```
 Devuelve:
 ```json
@@ -826,31 +814,32 @@ Devuelve:
 #### Credenciales TWOFA
 
 1. ##### Consulta el sitio Twofa del catálogo
-```php
-// Consultar catálogos
-$payload = array("id_site"=>"56cf5728784806f72b8b4569");
-$response = Sync::run(
-  $token,
+```python
+# Consultar catálogos
+payload = {"id_site": "56cf5728784806f72b8b4569"}
+response = Sync.run(
+  token,
   "/catalogues/sites", 
-  $payload,
+  payload,
   'GET'
-);
+)
 ```
 2. ##### Crea las credencials
-```php
-// Crear credenciales con Token o Autenticación de dos pasos
-$twofaSite = $response[0];
-$credentials = array();
-$credentials[$twofaSite->credentials[0]->name] = 'test';
-$credentials[$twofaSite->credentials[1]->name] = 'test';
-$payload['credentials'] = $credentials;
-$twofaCredential = Sync::run(
-  $token,
+```python
+# Crear credenciales con Token o Autenticación de dos pasos
+twofaSite = response[0]
+credentials = {}
+credentials[twofaSite['credentials'][0]['name']] = 'test'
+credentials[twofaSite['credentials'][1]['name']] = 'test'
+payload['credentials'] = credentials
+response = Sync.run(
+  token,
   "/credentials", 
-  $payload,
+  payload,
   'POST'
-);
-/* Regresa:
+)
+twofaCredential = response
+""" Regresa:
 {
   id_credential: "5e27c17ca2fc48614c41b33e",
   id_job_uuid: "5e27c17ce6fea94c7c6b4193",
@@ -861,19 +850,19 @@ $twofaCredential = Sync::run(
   status: "https://sync.paybook.com/v1/jobs/5e27c17ce6fea94c7c6b4194/status",
   twofa: "https://sync.paybook.com/v1/jobs/5e27c17ce6fea94c7c6b4194/twofa"
 }
-*/
+"""
 ```
 3. ##### Consulta el status de las credenciales y valida que sea TWOFA
-```php
-// Consulta Status Credenciales twofa
-$id_job = $twofaCredential->id_job;
-$response = Sync::run(
-  $token,
-  "/jobs/$id_job/status", 
-  null,
+```python
+# Consulta Status Credenciales twofa
+id_job = twofaCredential['id_job']
+response = Sync.run(
+  token,
+  f"/jobs/{id_job}/status", 
+  None,
   'GET'
-);
-/* Regresa:
+)
+""" Regresa:
 [
   {
       code: 100
@@ -892,25 +881,30 @@ $response = Sync::run(
           }
       ]
   }
-]
-*/
-$is_twofa = False;
-if($response[sizeof($response)->code] == 410) {
-  $is_twofa = True;
-}
+] """
+is_twofa = False
+if(response[len(response)-1]['code'] == 410):
+  is_twofa = True
 ```
 4. ##### Manda el TWOFA
-```php
-// Manda TWOFA
-$twofaToken = array("twofa" => array());
-$twofaToken["twofa"][$response[2]->twofa[0]->name] = "123456";
-$twofa = Sync::run(
-  $token,
-  "/jobs/$id_job/twofa", 
-  $twofaToken, 
+```python
+# Manda TWOFA
+twofaToken = {"twofa" :  {} }
+twofaToken["twofa"][response[2]['twofa'][0]['name']] = "123456"
+twofa = Sync.run(
+  token,
+  f"/jobs/{id_job}/twofa", 
+  twofaToken, 
   'POST'
-);
-/* Regresa:
+)      
+
+response = Sync.run(
+  token,
+  f"/jobs/{id_job}/status", 
+  None,
+  'GET'
+)
+""" Regresa:
 {
   rid: "ea1e848d-6ec2-454d-b296-0fe2b6c958c2",
   code: 200,
@@ -918,19 +912,18 @@ $twofa = Sync::run(
   status: true,
   message: null,
   response: true
-}
-*/
+} """
 ```
 5. ##### Consulta nuevamente el status
-```php
-$id_job = $credential->id_job;
-$response = Sync::run(
-  $token,
-  "/jobs/$id_job/status", 
-  null,
+```python
+id_job = twofaCredential['id_job']
+response = Sync.run(
+  token,
+  f"/jobs/{id_job}/status", 
+  None,
   'GET'
-);
-/* Regresa:
+)
+""" Regresa:
 [
   {
       code: 100
@@ -955,18 +948,17 @@ $response = Sync::run(
   {
       code: 200
   }
-]
-*/
+] """
 ```
 
 #### Consultar credenciales
-```php
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/credentials", 
-  null,
+  None,
   'GET'
-);
+)
 ```
 Devuelve:
 ```json
@@ -997,14 +989,14 @@ Devuelve:
 ```
 
 #### Eliminar una credencial
-```php
-$id_credential = $credential->id_credential;
-$response = Sync::run(
-  $token,
-  "/credentials/$id_credential", 
-  null,
+```python
+id_credential = satCredential['id_credential']
+response = Sync.run(
+  token,
+  f"/credentials/{id_credential}", 
+  None,
   'DELETE'
-);
+)
 ```
 
 Devuelve:
@@ -1019,15 +1011,16 @@ Devuelve:
 }
 ```
 #### Consultar historial de cambios de la credencial
-```php
-// Despues de crear una credencial (como en ejemplos anteriores)
-$id_job = $twofaCredential->id_job;
-$response = Sync::run(
-  $token,
-  "/jobs/$id_job/status", 
-  null,
+```python
+# Despues de crear una credencial (como en ejemplos anteriores)
+id_job = satCredential['id_job']
+response = Sync.run(
+  token,
+  f"/jobs/{id_job}/status", 
+  None,
   'GET'
-);
+)
+
 ```
 
 Devuelve:
@@ -1067,13 +1060,13 @@ Devuelve:
     <td>GET</td>
 <td>
 
-```php
+```python
 { token: token }
 ```
 </td>
 <td>
 
-```php
+```python
 {
     "id_account", //opcional
     "id_credential", //opcional
@@ -1096,13 +1089,13 @@ Devuelve:
 
 #### Consulta las cuentas de un usuario específico
 
-```php
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/accounts", 
-  array("id_credential"=>$id_credential),
+  {"id_credential": id_credential},
   'GET'
-);
+)
 ```
 Devuelve:
 ```json
@@ -1147,13 +1140,13 @@ Devuelve:
     <td>GET</td>
 <td rowspan="2">
 
-```php
+```python
 { token: token }
 ```
 </td>
 <td>
 
-```php
+```python
 {
     "id_transaction", //opcional
     "id_account", //opcional
@@ -1183,7 +1176,7 @@ Devuelve:
     <td>GET</td>
 <td>
 
-```php
+```python
 {
     "id_transaction", //opcional
     "id_account", //opcional
@@ -1206,16 +1199,16 @@ Devuelve:
 </table>
 
 #### Consulta las transacciones de un usuario específico
-```php
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/transactions", 
-  array(
-      "id_credential"=>$id_credential,
-      "limit"=>5
-  ),
+  {
+    "id_credential": id_credential,
+    "limit": 1
+  },
   'GET'
-);
+  )
 ```
 Devuelve:
 ```json
@@ -1283,13 +1276,13 @@ Devuelve:
 ```
 #### Consulta el número de transacciones dados algunos parámetros de búsqueda
 
-```php
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/transactions/count", 
-  array("id_credential"=>$id_credential),
+  {"id_credential": satCredential['id_credential']},
   'GET'
-);
+)
 ```
 
 Devuelve:
@@ -1317,13 +1310,13 @@ Devuelve:
     <td>GET</td>
 <td rowspan="3">
 
-```php
+```python
 { api_key: API_KEY }
 ```
 </td>
 <td>
 
-```php
+```python
 {}
 ```
 </td>
@@ -1333,7 +1326,7 @@ Devuelve:
     <td>POST</td>
 <td>
 
-```php
+```python
 {
     "url", 
     "events" //["credential_create","credential_update","refresh"]
@@ -1347,7 +1340,7 @@ Devuelve:
     <td>DELETE</td>
 <td>
 
-```php
+```python
 {}
 ```
 </td>
@@ -1357,16 +1350,16 @@ Devuelve:
 
 #### Crear Webhook
 
-```php
-$response = Sync::run(
-  array("api_key" => API_KEY),
+```python
+response = Sync.run(
+  API_KEY,
   "/webhooks", 
-  array(
-      "url"=>'http://mydomain.ngrok.io/webhook'; // Tu endpoint donde recibiras la devolución de llamada, 
-      "events"=>array("credential_create","credential_update","refresh")
-  ),
+  {
+    "url": WEBHOOK_ENDPOINT, 
+    "events": ["credential_create","credential_update","refresh"],
+  },
   'POST'
-);
+)
 ```
 Devuelve:
 ```json
@@ -1387,13 +1380,14 @@ Devuelve:
 
 #### Consultar Webhooks
 
-```php
-$response = Sync::run(
-  array("api_key" => API_KEY),
+```python
+# Consultar Webhook
+response = Sync.run(
+  API_KEY,
   "/webhooks", 
-  null,
+  None,
   'GET'
-);
+)
 ```
 
 Devuelve:
@@ -1418,14 +1412,14 @@ Devuelve:
 ```
 ####  Eliminar Webhook
 
-```php
-$id_webhook = $response->id_webhook;
-$response = Sync::run(
-  array("api_key" => API_KEY),
-  "/webhooks/$id_webhook", 
-  null,
+```python
+# Eliminar Webhook
+response = Sync.run(
+  API_KEY,
+  f"/webhooks/{id_webhook}", 
+  None,
   'DELETE'
-);
+)
 ```
 Devuelve:
 ```json
@@ -1457,13 +1451,13 @@ Devuelve:
     <td rowspan="4">GET</td>
 <td rowspan="4">
 
-```php
+```python
 {token: TOKEN}
 ```
 </td>
 <td>
 
-```php
+```python
 {
     "id_account", //opcional
     "id_attachment_type", //opcional
@@ -1487,7 +1481,7 @@ Devuelve:
     <td>Consultar el número de archivos adjuntos</td>
 <td>
 
-```php
+```python
 {
   "id_account", //opcional
   "id_attachment_type", //opcional
@@ -1508,7 +1502,7 @@ Devuelve:
     <td>Regresa el archivo adjunto</td>
 <td>
 
-```php
+```python
 {}
 ```
 </td>
@@ -1521,7 +1515,7 @@ Devuelve:
     <td>Regresa la información extraída del archivo adjunto</td>
 <td>
 
-```php
+```python
 {}
 ```
 </td>
@@ -1531,13 +1525,16 @@ Devuelve:
 
 #### Consulta los archivos adjuntos de un usuario específico
 
-```php
-$response = Sync::run(
-  $token,
+```python
+response = Sync.run(
+  token,
   "/attachments", 
-  array("id_credential"=>$id_credential),
+  {
+      "id_credential": satCredential['id_credential'],
+      "limit": 1
+  },
   'GET'
-);
+)
 ```
 
 Devuelve:
@@ -1594,20 +1591,20 @@ Devuelve:
 ]
 ```
 #### Regresa el archivo adjunto
-```php
-$attachment = $response[0];
-$attachmentUrl = $attachment->url;
-$response = Sync::run(
-  $token,
-  $attachmentUrl, 
-  null,
+```python
+attachment = response[0]
+attachmentUrl = attachment['url']
+response = Sync.run(
+  token,
+  attachmentUrl, 
+  None,
   'GET'
-);
+)
 ```
 Devuelve: 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" Version="3.3" Serie="C" Folio="78" Fecha="2019-01-24T06:15:49" FormaPago="99" NoCertificado="0000100000040090000" Certificado="MIIGHzCCBAegAwIBAgIUMDAwMDEwMDAwMDA0MDA5MDI0NTkwDQYJKoZIhvcNAQELBQAwggGyMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJDB1Bdi4gSGlkYWxnbyA3NywgQ29sLiBHdWVycmVybzEOMAwGA1UEEQwFMDYzMDAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBEaXN0cml0byBGZWRlcmFsMRQwEgYDVQQHDAtDdWF1aHTDqW1vYzEVMBMGA1UELRMMU0FUOTcwNzAxTk4zMV0wWwYJKoZIhvcNAQkCDE5SZXNwb25zYWJsZTogQWRtaW5pc3RyYWNpw7NuIENlbnRyYWwgZGUgU2VydmljaW9zIFRyaWJ1dGFyaW9zIGFsIENvbnRyaWJ1eWVudGUwHhcNMTUxMTMwMTYzODU4WhcNMTkxMTMwMTYzODU4WjCBvzEkMCIGA1UEAxMbTUlHVUVMIEFOR0VMIEJBVVRJU1RBIE1BVEVPMSQwIgYDVQQpExtNSUdVRUwgQU5HRUwgQkFVVElTVEEgTUFURU8xJDAiBgNVBAoTG01JR1VFTCBBTkdFTCBCQVVUSVNUQSBNQVRFTzEWMBQGA1UELRMNQkFNTTg3MDcyMkw4OTEbMBkGA1UEBRMSQkFNTTg3MDcyMkhHVFRURzA2MRYwFAYDVQQLEw1CQU1NODcwNzIyTDg5MIIBIjANBgkqhkiG9w0gNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJcRoFbRCQd+z10JQ8DJePQP1epF8q/dIqDwElqOrIwXsm59ZHVn1IomZnmqPbuSjGd1eYJQ+Z6dfdT/bU6gGIL9lUlDuhnQmygbrkaEizIQcXCElNEYm0zWZidGmsMEF871R1HZPcluugOrhWpRaskj/1Wwx27uwTBF6llItHkbJ7Q/8SOAzoiqaT/LgkKhw3sCSSWsHtnBf467I4+EWcgJ7LPPuVZ8U7BIyMsuvxhPcAqVGQIDAQABox0wGzAMBgNVHRMBAf8EAjAAMAsGA1UdDwQEAwIGwDANBgkqhkiG9w0BAQsFAAOCAgEAglPwKcTwNRxZWxg5u23VmpaRzV2rFojBhvNJ3q9xMRRAoIAf+1YxV3n+3j3xQCuSWiHyTuauaRTv6tj9S7mouu9A5UxuRV5PIZ56Y15IJ0ziF/+gpOLI1DGurUKqbkfpJ/DOHU0JpXb1COkn2C3z+ue9qInkfHjq9qLFdhVsBdLux6ewtnT7cOdETpmGPOzVn+VzB5UHpGsLmwHf8Fyhzhb2na4Mqds+XhWnXu844Vr42DnnLHaWQc5dOOsraTAxt17ly7WCIoX36m+/kQqEacvvfsTtWmCPYD240wkNpSRbbc/E6jRg5cJHEcUU5sZ1lekCCz5Vkp+tul2qrTTFYzFG1uftbpBruhdbwXC/kWm8D1wGubp4Crn/zCvKMXwAPtk47E8EjmvOkgcGM0xZGFYibEvcrbeo69aAff0Bx0V34KU3pYxPHPP1iXLk0Hal65R88RKulAjGhopEU4XjdqSajfXoG5n4PNMyfIONuNNwwebciqEjFwB/Pfff2JYg6nbidKZnIJE1HnUgJwkByzTjsAcACFpNjVBXmmBfR51J7FHV9p8H2P7ikVA+ktjdENmjD+xfJSdMfVUyH2+H/RWPm5QuYlekxWXzMnTKvkafjwUuIyqiyjko4+xEp95TmT+nKX15E7Vw+JyJUghri3Xs/SOD/CFSu8O1yAn+ji4=" SubTotal="810.18" Descuento="0.00" Moneda="MXN" Total="810.18" TipoDeComprobante="I" MetodoPago="PUE" LugarExpedicion="00000" Sello="CjGJ6Uz6jWQ6wFyn8SEvRVCOCZq2sRtTAsUkLJjrs8vPSHfeEs+bMBhNnZ+7gLE5gSO+FU+IA64d+I9w98DEop24GRNDoWPxRGvX7SON4p47Ygna/rCWynyjCw8kYqRtBHxypwh0HGFLoNx+ulK+WcOXG7F3Nx2I+EPTg6jn1VvwBm1c1iat1Zgnhcna2ZJyZA3cRFOBhNONocr+qAF8zTtHSoJNYmolOlyIC9akyIPfrNl/ALgni4k1KwpEcr4HsyqVabUDW47vH5TqSNfFz+ZY3bZZZf7FLdTBn8So984+vbomWg/rP7OCBALI/u/+kIkgotm4TF/ImuGjUeKITw==">
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" Version="3.3" Serie="C" Folio="78" Fecha="2019-01-24T06:15:49" FormaPago="99" NoCertificado="0000100000040090000" Certificado="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" SubTotal="810.18" Descuento="0.00" Moneda="MXN" Total="810.18" TipoDeComprobante="I" MetodoPago="PUE" LugarExpedicion="00000" Sello="CjGJ6Uz6jWQ6wFyn8SEvRVCOCZq2sRtTAsUkLJjrs8vPSHfeEs+bMBhNnZ+7gLE5gSO+FU+IA64d+I9w98DEop24GRNDoWPxRGvX7SON4p47Ygna/rCWynyjCw8kYqRtBHxypwh0HGFLoNx+ulK+WcOXG7F3Nx2I+EPTg6jn1VvwBm1c1iat1Zgnhcna2ZJyZA3cRFOBhNONocr+qAF8zTtHSoJNYmolOlyIC9akyIPfrNl/ALgni4k1KwpEcr4HsyqVabUDW47vH5TqSNfFz+ZY3bZZZf7FLdTBn8So984+vbomWg/rP7OCBALI/u/+kIkgotm4TF/ImuGjUeKITw==">
     <cfdi:Emisor Rfc="ACM010101ABC" Nombre="ACME CORP" RegimenFiscal="601"/>
     <cfdi:Receptor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE SA DE CV" UsoCFDI="P01"/>
     <cfdi:Conceptos>
@@ -1620,15 +1617,15 @@ Devuelve:
 ```
 
 #### Regresa la información extraída del archivo adjunto
-```php
-$attachment = $response[0];
-$attachmentUrl = $attachment->url;
-$response = Sync::run(
-  $token,
-  $attachmentUrl."/extra", 
-  null,
+```python
+attachment = response[0]
+attachmentUrl = attachment['url']
+response = Sync.run(
+  token,
+  attachmentUrl+"/extra", 
+  None,
   'GET'
-);
+)
 ```
 
 Devuelve:
@@ -1653,7 +1650,7 @@ Devuelve:
                 "FECHA": "2019-01-24T06:15:49",
                 "FORMAPAGO": "99",
                 "NOCERTIFICADO": "0000100000040090000",
-                "CERTIFICADO": "MIIGHzCCBAegAwIBAgIUMDAwMDEwMDAwMDA0MDA5MDI0NTkwDQYJKoZIhvcNAQELBQAwggGyMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJDB1Bdi4gSGlkYWxnbyA3NywgQ29sLiBHdWVycmVybzEOMAwGA1UEEQwFMDYzMDAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBEaXN0cml0byBGZWRlcmFsMRQwEgYDVQQHDAtDdWF1aHTDqW1vYzEVMBMGA1UELRMMU0FUOTcwNzAxTk4zMV0wWwYJKoZIhvcNAQkCDE5SZXNwb25zYWJsZTogQWRtaW5pc3RyYWNpw7NuIENlbnRyYWwgZGUgU2VydmljaW9zIFRyaWJ1dGFyaW9zIGFsIENvbnRyaWJ1eWVudGUwHhcNMTUxMTMwMTYzODU4WhcNMTkxMTMwMTYzODU4WjCBvzEkMCIGA1UEAxMbTUlHVUVMIEFOR0VMIEJBVVRJU1RBIE1BVEVPMSQwIgYDVQQpExtNSUdVRUwgQU5HRUwgQkFVVElTVEEgTUFURU8xJDAiBgNVBAoTG01JR1VFTCBBTkdFTCBCQVVUSVNUQSBNQVRFTzEWMBQGA1UELRMNQkFNTTg3MDcyMkw4OTEbMBkGA1UEBRMSQkFNTTg3MDcyMkhHVFRURzA2MRYwFAYDVQQLEw1CQU1NODcwNzIyTDg5MIIBIjANBgkqhkiG9w0gNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJcRoFbRCQd+z10JQ8DJePQP1epF8q/dIqDwElqOrIwXsm59ZHVn1IomZnmqPbuSjGd1eYJQ+Z6dfdT/bU6gGIL9lUlDuhnQmygbrkaEizIQcXCElNEYm0zWZidGmsMEF871R1HZPcluugOrhWpRaskj/1Wwx27uwTBF6llItHkbJ7Q/8SOAzoiqaT/LgkKhw3sCSSWsHtnBf467I4+EWcgJ7LPPuVZ8U7BIyMsuvxhPcAqVGQIDAQABox0wGzAMBgNVHRMBAf8EAjAAMAsGA1UdDwQEAwIGwDANBgkqhkiG9w0BAQsFAAOCAgEAglPwKcTwNRxZWxg5u23VmpaRzV2rFojBhvNJ3q9xMRRAoIAf+1YxV3n+3j3xQCuSWiHyTuauaRTv6tj9S7mouu9A5UxuRV5PIZ56Y15IJ0ziF/+gpOLI1DGurUKqbkfpJ/DOHU0JpXb1COkn2C3z+ue9qInkfHjq9qLFdhVsBdLux6ewtnT7cOdETpmGPOzVn+VzB5UHpGsLmwHf8Fyhzhb2na4Mqds+XhWnXu844Vr42DnnLHaWQc5dOOsraTAxt17ly7WCIoX36m+/kQqEacvvfsTtWmCPYD240wkNpSRbbc/E6jRg5cJHEcUU5sZ1lekCCz5Vkp+tul2qrTTFYzFG1uftbpBruhdbwXC/kWm8D1wGubp4Crn/zCvKMXwAPtk47E8EjmvOkgcGM0xZGFYibEvcrbeo69aAff0Bx0V34KU3pYxPHPP1iXLk0Hal65R88RKulAjGhopEU4XjdqSajfXoG5n4PNMyfIONuNNwwebciqEjFwB/Pfff2JYg6nbidKZnIJE1HnUgJwkByzTjsAcACFpNjVBXmmBfR51J7FHV9p8H2P7ikVA+ktjdENmjD+xfJSdMfVUyH2+H/RWPm5QuYlekxWXzMnTKvkafjwUuIyqiyjko4+xEp95TmT+nKX15E7Vw+JyJUghri3Xs/SOD/CFSu8O1yAn+ji4=",
+                "CERTIFICADO": "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",
                 "SUBTOTAL": "810.18",
                 "DESCUENTO": "0.00",
                 "MONEDA": "MXN",
@@ -1726,9 +1723,10 @@ Devuelve:
 
 ## Entorno
  _Versions used by the time this file was writted_
- - [**PHP**](https://www.php.net/): 7.1.23
- - [**Composer**](https://getcomposer.org): 1.10
- - [**rmccue/requests**](https://packagist.org/packages/rmccue/requests):^1.7
+* [Python](https://www.python.org/): 3.7
+* [Pipenv](https://github.com/pypa/pipenv): 2018.11.26
+* [pip](https://pypi.org/project/pip/): 20.0.2
+* [requests](https://pypi.org/project/requests/) : 2.23.0
 
 ## Enlaces de interes
 1. [Documentación oficial][sync-doc-intro] de Paybook Sync.
