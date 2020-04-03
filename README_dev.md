@@ -5,7 +5,8 @@
 * [Python](https://www.python.org/): 3.7
 * [Pipenv](https://github.com/pypa/pipenv): 2018.11.26
 * [Twine](https://github.com/pypa/twine/) : 3.1.1
-
+* [requests](https://pypi.org/project/requests/) : 2.23.0
+* [python-dotenv](https://pypi.org/project/python-dotenv/) : 0.12.0 
 ## Set up local development 
 Run development local:
 ```bash
