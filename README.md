@@ -203,7 +203,7 @@ La URL que nos proporcione ngrok es la misma que tendrás que mandar cuando crea
 
 ### Sync Widget
 
-El widget de Sync se puede usar para **crear**, **actualizar** y **activar** la sincronización de credenciales de forma sencilla con pocas líneas de código desde tu ***Front-end***. Visita el [repositorio oficial][sync-widget-repo] para implementarlo, ampliamente recomendado.
+El widget de Sync se puede usar para **crear**, **actualizar** y **activar** la sincronización de credenciales de forma sencilla con pocas líneas de código desde tu ***Front-end***. Visita el [repositorio oficial][sync-widget-repo] y la [documentación oficial][sync-doc-widget] para implementarlo, ampliamente recomendado.
 
 <figure class="image">
   <img src="https://drive.google.com/uc?export=view&id=1Ll-fQQodIEnlx9ys0U4hn67y8w_EjNlX"/>
@@ -1756,11 +1756,12 @@ _Made with :blue_heart: by Paybook family._
  [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 [Paybook Sync]: <https://www.paybook.com/sync/es/>
-[sync-doc-intro]: <https://www.paybook.com/sync/es/docs/intro>
-[sync-doc-endpoint]: <https://www.paybook.com/w/es/sync/site/docs/api?topics=endpoints>
-[sync-doc-code.response]: <https://www.paybook.com/w/es/sync/site/docs/api?topics=response&topics=code>
+[sync-doc-intro]: <https://www.paybook.com/w/es/sync/public/app/(section:docs/mx/sync/quickstart)>
+[sync-doc-endpoint]: <https://www.paybook.com/w/es/sync/public/app/(section:docs/mx/sync/api/catalogues)>
+[sync-doc-code.response]: <https://www.paybook.com/w/es/sync/public/app/(section:docs/mx/sync/intro)>
 [sync-postman-doc]: <https://github.com/Paybook/sync-rest>
 [sync-widget-repo]: <https://github.com/Paybook/sync-widget>
+[sync-doc-widget]: <https://www.paybook.com/w/es/sync/public/app/(section:docs/mx/sync/widget/overview)>
 
 [ngrok]: <https://ngrok.com/>
 [logo]: <https://raw.githubusercontent.com/Paybook/sync-php/master/images/syncLogo.svg?sanitize=true>
