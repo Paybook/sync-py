@@ -172,20 +172,30 @@ La ventaja principal es que te permite recibir las últimas actualizaciones de c
 Para fines prácticos de desarrollo usaremos el servicio de [ngrok][ngrok], el cual nos permite crear URLs públicas para exponer nuestro servidor local a través de internet.
 Puedes consultar cómo instalarlo en su [página de descargas](https://ngrok.com/download).
 
-Ahora crearemos un servidor sencillo con [python](https://www.python.net/) y [Slim](https://www.slimframework.com/). 
+Ahora crearemos un servidor sencillo con [python](https://www.python.org) y [Flask](https://flask.palletsprojects.com/en/1.1.x/). 
 
 > Cabe mencionar que se hace uso de estas tecnologías con fines ilustrativos y el desarrollador es libre de implementar las que crea más convenientes. 
 
 Creando un archivo al que llamaremos `server.py` e incluiremos el siguiente código:
 ```python
-# Python code here
+from flask import Flask, request
+app = Flask(__name__)
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        return 'Hello from my webhook!'
 ```
 
-Habiendo terminado lo anterior, instalamos slim con el comando `composer require slim/slim slim/psr7` y luego corremos nuestro servidor con el comando `python -S server.js`
+Habiendo terminado lo anterior, instalamos Flask con el comando `pip install Flask` y luego iniciamos el servidor con los siguientes comandos:
+```bash
+export FLASK_APP=server.py
+flask run
+ ```
 
 > **Warning:** The built-in web server was designed to aid application development. It may also be useful for testing purposes or for application demonstrations that are run in controlled environments. It is not intended to be a full-featured web server. It should not be used on a public network.
 
-Por último ejecutamos ngrok con el comando: `<path-to>/ngrok http 3000` y tendremos nuestro servidor listo escuchando por actualizaciones del webhook.
+Por último ejecutamos ngrok con el comando: `<path-to>/ngrok http 5000` y tendremos nuestro servidor listo escuchando por actualizaciones del webhook.
 
 La URL que nos proporcione ngrok es la misma que tendrás que mandar cuando creas un webhook como en este [ejemplo](#crear-webhook).
 
@@ -782,7 +792,7 @@ response = Sync.run(
   "/credentials", 
   None,
   'GET'
-  )
+)
 ```
 Devuelve:
 ```json
@@ -1208,7 +1218,7 @@ response = Sync.run(
     "limit": 1
   },
   'GET'
-  )
+)
 ```
 Devuelve:
 ```json
@@ -1736,7 +1746,9 @@ Devuelve:
 
 ## Comentarios y aportes
 
-¡Sientete con la confianza de hacer un pull request! :ok_hand:
+Si crees que algo podría mejorar o no queda completamente claro, haznolos saber, estamos muy atentos a tus comentarios.
+
+¡Sientete con la confianza de hacer un pull request o crear un issue! :ok_hand:
 
 ---
 _Made with :blue_heart: by Paybook family._
