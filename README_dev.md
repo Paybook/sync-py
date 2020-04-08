@@ -58,6 +58,23 @@ sync-py = {index = "test",version = "*"}
 
 3. Run `pipevn run python path-to/test.py`
 
+## Publish on pypi.org
+
+1.Create **dist files**: 
+```bash
+pipenv run python setup.py sdist bdist_wheel
+```
+
+2.Check **dist files**: 
+```bash
+twine check dist/*
+```
+
+3.Publish on pypi.org: 
+```bash
+twine upload dist/*
+```
+
 ## TODO
 
 - [ ] Add version one version manager (https://packaging.python.org/guides/single-sourcing-package-version/#single-sourcing-the-version)
