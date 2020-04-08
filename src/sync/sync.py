@@ -4,10 +4,6 @@ from requests.exceptions import HTTPError
 
 SYNC_API_URL = 'https://sync.paybook.com/v1'
 
-def testIP():
-    response = requests.get('https://httpbin.org/ip')
-    print('Your IP is {0}'.format(response.json()['origin']))
-
 class Sync():
     @staticmethod
     def auth(AUTH: dict, id_user: dict) -> dict:
