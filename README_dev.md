@@ -5,8 +5,14 @@
 * [Python](https://www.python.org/): 3.7
 * [Pipenv](https://github.com/pypa/pipenv): 2018.11.26
 * [Twine](https://github.com/pypa/twine/) : 3.1.1
+* [bumb2version](https://pypi.org/project/bump2version/) : 1.0.0
+
+### Dependencies
 * [requests](https://pypi.org/project/requests/) : 2.23.0
+
+### Development dependencies
 * [python-dotenv](https://pypi.org/project/python-dotenv/) : 0.12.0 
+
 ## Set up local development 
 Run development local:
 ```bash
@@ -15,7 +21,16 @@ Run development local:
     pipenv graph
 ```
 
-## Publish on test.pypi.org
+##  Versioning
+
+1. Install bump2version: `pip install --upgrade bump2version`
+
+1. Then run the respective version update:
+- Major: `bump2version major` // 0.1.0 --> 1.0.0
+- Minor: `bump2version minor` // 0.1.0 --> 0.2.0
+- Patch: `bump2version patch` // 0.1.0 --> 0.1.1
+
+## Publish on test.pypi.org
 
 1.Create **dist files**: 
 ```bash
