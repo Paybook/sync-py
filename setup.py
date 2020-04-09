@@ -44,7 +44,6 @@ setup(
         # Pick your license as you wish
         'License :: OSI Approved :: MIT License',
         # Specify the Python versions you support here.
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -54,7 +53,7 @@ setup(
     keywords='paybook sync bank sat',  # Optional
     package_dir={'': 'src'},  # Optional
     packages=find_packages(where='src'),  # Required
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
+    python_requires='!=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
     install_requires=['requests'],  # Optional
     extras_require={  # Optional
         'dev': [''],
