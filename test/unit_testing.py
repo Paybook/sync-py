@@ -269,15 +269,19 @@ if __name__ == "__main__":
             logger(response, "Is two-fa!")
         
         # Manda TWOFA
-        twofaToken = {"twofa" :  {} }
-        twofaToken["twofa"][response[2]['twofa'][0]['name']] = "123456"
-        twofa = Sync.run(
+        twofa_token = {"twofa" :  {} }
+        twofa = response[2]['twofa']
+        for element in twofa:
+            name = element['name']
+            twofa_token["twofa"][name] = "123456"
+        
+        twofa_response = Sync.run(
             token,
             f"/jobs/{id_job}/twofa", 
-            twofaToken, 
+            twofa_token, 
             'POST'
         )
-        logger(response, "Manda TWOFA")        
+        logger(twofa_response, "Manda TWOFA")        
 
         response = Sync.run(
             token,

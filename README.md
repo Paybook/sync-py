@@ -899,14 +899,18 @@ if(response[len(response)-1]['code'] == 410):
 4. ##### Manda el TWOFA
 ```python
 # Manda TWOFA
-twofaToken = {"twofa" :  {} }
-twofaToken["twofa"][response[2]['twofa'][0]['name']] = "123456"
-twofa = Sync.run(
+twofa_token = {"twofa" :  {} }
+twofa = response[2]['twofa']
+for element in twofa:
+  name = element['name']
+  twofa_token["twofa"][name] = "123456"
+
+twofa_response = Sync.run(
   token,
   f"/jobs/{id_job}/twofa", 
-  twofaToken, 
+  twofa_token, 
   'POST'
-)      
+)   
 
 response = Sync.run(
   token,
@@ -960,6 +964,8 @@ response = Sync.run(
   }
 ] """
 ```
+
+> **NOTA**: El uso del [Sync Widget](#sync-widget) nos ahorra completamente tener que lidiar con este escenario ya que nos proporciona toda la interfaz para realizar los retos de Twofa, en este ejemplo se usa Acme Sandbox pero ya en producción, los campos a enviar varían de institución a institución en el Twofa Challenge.
 
 #### Consultar credenciales
 ```python
