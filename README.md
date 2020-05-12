@@ -167,8 +167,6 @@ Un **Webhook** es una devolución de llamada HTTP a un URL especificado. Ellos s
 
 La ventaja principal es que te permite recibir las últimas actualizaciones de credenciales, transacciones y attachments directamente en tu aplicación sin necesidad de estar preguntando constantemente por ellas.
 
-![alt](https://media.giphy.com/media/l2JehPbx5eIFLqAms/giphy.gif)
-
 Para fines prácticos de desarrollo usaremos el servicio de [ngrok][ngrok], el cual nos permite crear URLs públicas para exponer nuestro servidor local a través de internet.
 Puedes consultar cómo instalarlo en su [página de descargas](https://ngrok.com/download).
 
