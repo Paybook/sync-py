@@ -73,7 +73,7 @@ sync-py = {index = "test",version = "*"}
 
 3. Run `pipevn run python path-to/test.py`
 
-## Publish on pypi.org
+## Publish on pypi.org
 
 1.Create **dist files**: 
 ```bash
