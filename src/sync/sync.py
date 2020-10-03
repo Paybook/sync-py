@@ -1,6 +1,7 @@
 # -​*- coding: utf-8 -*​-
 import requests
 from requests.exceptions import HTTPError
+from json.decoder import JSONDecodeError
 
 SYNC_API_URL = 'https://sync.paybook.com/v1'
 
@@ -54,16 +55,12 @@ class Sync():
             # response = requests.post(uri, headers=headers, params=payload)
             response = requests.post(uri, headers=headers, json=payload)
             response.raise_for_status()
-            text_body = response.text
-            if not text_body.startswith('<?xml', 0, 6):
-                response_json = response.json()
-                sync_response = response_json['response']
-                is_array = isinstance(sync_response, list)
-                is_bool = isinstance(sync_response, bool)
-                response = sync_response if is_array or not is_bool else response_json
-                return response
-            else:
-                return text_body
+            response_json = response.json()
+            sync_response = response_json['response']
+            is_array = isinstance(sync_response, list)
+            is_bool = isinstance(sync_response, bool)
+            response = sync_response if is_array or not is_bool else response_json
+            return response
         except KeyError as bad_method:
             print(f"INCORRECT METHOD ASKED: {bad_method}")            
             raise bad_method 
@@ -74,6 +71,8 @@ class Sync():
                 response.json()['message'],
                 http_err
             )
+        except JSONDecodeError as json_error:
+            return response.text
 class Error(Exception):
 
     def __init__(self, code, response, message, status):
