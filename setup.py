@@ -24,7 +24,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='sync-py',  # Required
-    version='1.0.1',  # Required
+    version='1.0.2',  # Required
     description='Consume Paybook Sync REST API without pain',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional
