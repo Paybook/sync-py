@@ -26,9 +26,9 @@ Run development local:
 1. Install bump2version: `pip install --upgrade bump2version`
 
 1. Then run the respective version update:
-- Major: `bump2version major` // 0.1.0 --> 1.0.0
-- Minor: `bump2version minor` // 0.1.0 --> 0.2.0
-- Patch: `bump2version patch` // 0.1.0 --> 0.1.1
+- Major: `pipenv run bump2version major` // 0.1.0 --> 1.0.0
+- Minor: `pipenv run bump2version minor` // 0.1.0 --> 0.2.0
+- Patch: `pipenv run bump2version patch` // 0.1.0 --> 0.1.1
 
 ## Publish on test.pypi.org
 
