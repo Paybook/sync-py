@@ -14,3 +14,7 @@ requests = "*"
 
 [requires]
 python_version = "3"
+
+[scripts]
+test_users = "python ./test/users.py"
+unit_test = "python ./test/unit_testing.py"
