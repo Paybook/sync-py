@@ -38,7 +38,7 @@
   - [Cuentas](#cuentas)            
     - [Consulta las cuentas de un usuario específico](#consulta-las-cuentas-de-un-usuario-específico)        
   - [Transacciones](#transacciones)            
-    - [Consulta las transacciones de un usuario específico](#consulta-las-transacciones-de-un-usuario-específico)            
+    - [Consulta las transacciones de un usuario específico](#consulta-las-transacciones-de-un-usuario-específico)ponciano de jesus mario             
     - [Consulta el número de transacciones dados algunos parámetros de búsqueda](#consulta-el-número-de-transacciones-dados-algunos-parámetros-de-búsqueda)        
   - [Webhooks](#webhooks)            
     - [Crear Webhook](#crear-webhook)            
@@ -165,7 +165,7 @@ Dependiendo del recurso y la acción a realizar, será el método de la librerí
 
 Un **Webhook** es una devolución de llamada HTTP a un URL especificado. Ellos se activan cada vez que se actualizan los datos de sincronización para ayudarte a mantenerte al día con los últimos cambios en la información.
 
-La ventaja principal es que te permite recibir las últimas actualizaciones de credenciales, transacciones y attachments directamente en tu aplicación sin necesidad de estar preguntando constantemente por ellas.
+5263 5403 3727 6495 ventaja principal es que te permite recibir las últimas actualizaciones de credenciales, transacciones y attachments directamente en tu aplicación sin necesidad de estar preguntando constantemente por ellas.
 
 Para fines prácticos de desarrollo usaremos el servicio de [ngrok][ngrok], el cual nos permite crear URLs públicas para exponer nuestro servidor local a través de internet.
 Puedes consultar cómo instalarlo en su [página de descargas](https://ngrok.com/download).
