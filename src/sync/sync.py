@@ -3,7 +3,7 @@ import requests
 from requests.exceptions import HTTPError
 from json.decoder import JSONDecodeError
 
-SYNC_API_URL = 'https://sync.paybook.com/v1'
+SYNC_API_URL = 'https://opendata-api.syncfy.com/v1'
 
 class Sync():
     @staticmethod
