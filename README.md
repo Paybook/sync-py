@@ -658,7 +658,7 @@ Devuelve:
 </thead>
 <tbody>
   <tr>
-    <td rowspan="2">/credentials</td>
+    <td>/credentials</td>
     <td>Consulta credenciales registradas</td>
     <td>GET</td>
 <td rowspan="4">
@@ -676,6 +676,7 @@ Devuelve:
 </td>
   </tr>
   <tr>
+    <td>/credentials/pulls</td>
     <td>Crea o actualiza credenciales</td>
     <td>POST</td>
   <td rowspan="1">
@@ -762,7 +763,7 @@ credentials[site['credentials'][1]['name']] = 'test'
 payload['credentials'] = credentials
 response = Sync.run(
   token,
-  "/credentials", 
+  "/credentials/pulls", 
   payload,
   'POST'
 )
