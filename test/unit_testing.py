@@ -107,7 +107,7 @@ if __name__ == "__main__":
         payload['credentials'] = credentials
         response = Sync.run(
             token,
-            "/credentials", 
+            "/credentials/pulls", 
             payload,
             'POST'
         )
@@ -247,7 +247,7 @@ if __name__ == "__main__":
         payload['credentials'] = credentials
         response = Sync.run(
             token,
-            "/credentials", 
+            "/credentials/pulls", 
             payload,
             'POST'
         )
